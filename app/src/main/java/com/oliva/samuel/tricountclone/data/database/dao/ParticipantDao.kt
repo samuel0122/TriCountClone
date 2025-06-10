@@ -1,0 +1,25 @@
+package com.oliva.samuel.tricountclone.data.database.dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
+import com.oliva.samuel.tricountclone.data.database.entities.ParticipantEntity
+
+@Dao
+interface ParticipantDao {
+    @Query("SELECT * FROM ${TricountContract.TABLE_PARTICIPANT}")
+    fun getAll(): List<ParticipantEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(user: ParticipantEntity): Long
+
+    @Update
+    suspend fun update(user: ParticipantEntity): Int
+
+    @Delete
+    suspend fun delete(user: ParticipantEntity): Int
+}
