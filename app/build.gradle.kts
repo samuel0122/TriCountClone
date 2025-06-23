@@ -53,6 +53,23 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Unit Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.core.testing)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
+
+    // Instrumented Testing
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.core.testing)
+    androidTestImplementation(libs.turbine)
+
     // Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
@@ -93,11 +110,6 @@ dependencies {
     // Icons
     implementation(libs.icons.extended)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

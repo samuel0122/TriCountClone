@@ -12,7 +12,7 @@ import java.util.UUID
 data class UserEntity(
     @PrimaryKey
     @ColumnInfo(name = TricountContract.TABLE_USERS_COLUMN_ID)
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
 
     @ColumnInfo(name = TricountContract.TABLE_USERS_COLUMN_NAME)
     val name: String

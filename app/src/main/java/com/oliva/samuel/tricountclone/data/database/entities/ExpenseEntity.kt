@@ -33,7 +33,7 @@ import java.util.UUID
 data class ExpenseEntity(
     @PrimaryKey
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_ID)
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_TITLE)
     val title: String,
@@ -42,13 +42,13 @@ data class ExpenseEntity(
     val amount: Double,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_PAID_BY)
-    val paidBy: String?,
+    val paidBy: UUID?,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_CREATED_AT)
     val createdAt: Date,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_TRICOUNT_ID)
-    val tricountId: String,
+    val tricountId: UUID,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_NOTE)
     val note: String?

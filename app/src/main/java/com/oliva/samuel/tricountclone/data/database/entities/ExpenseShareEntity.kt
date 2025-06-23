@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
+import java.util.UUID
 
 @Entity(
     tableName = TricountContract.TABLE_EXPENSE_SHARE,
@@ -33,10 +34,10 @@ import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
 )
 data class ExpenseShareEntity(
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_SHARE_COLUMN_ID)
-    val expenseId: String,
+    val expenseId: UUID,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_SHARE_COLUMN_PARTICIPANTS_ID)
-    val participantId: String,
+    val participantId: UUID,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_SHARE_COLUMN_AMOUNT_OWNED)
     val amountOwed: Double

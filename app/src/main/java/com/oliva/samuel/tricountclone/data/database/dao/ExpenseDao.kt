@@ -8,11 +8,12 @@ import androidx.room.Query
 import androidx.room.Update
 import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
 import com.oliva.samuel.tricountclone.data.database.entities.ExpenseEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseDao {
     @Query("SELECT * FROM ${TricountContract.TABLE_EXPENSE}")
-    fun getAll(): List<ExpenseEntity>
+    fun getAll(): Flow<List<ExpenseEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: ExpenseEntity): Long
