@@ -16,7 +16,7 @@ interface ParticipantDao {
     fun getAll(): Flow<List<ParticipantEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: ParticipantEntity): Long
+    suspend fun insert(user: ParticipantEntity)
 
     @Update
     suspend fun update(user: ParticipantEntity): Int

@@ -11,6 +11,7 @@ import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
 import com.oliva.samuel.tricountclone.data.database.entities.TricountEntity
 import com.oliva.samuel.tricountclone.data.database.entities.relations.TricountWithParticipantsAndExpenses
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 @Dao
 interface TricountDao {
@@ -22,10 +23,10 @@ interface TricountDao {
         "SELECT * FROM ${TricountContract.TABLE_TRICOUNT} " +
                 "WHERE ${TricountContract.TABLE_TRICOUNT_COLUMN_ID} = :tricountId"
     )
-    fun getTricountWithParticipantsAndExpenses(tricountId: String): Flow<TricountWithParticipantsAndExpenses>
+    fun getTricountWithParticipantsAndExpenses(tricountId: UUID): Flow<TricountWithParticipantsAndExpenses>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: TricountEntity): Long
+    suspend fun insert(user: TricountEntity)
 
     @Update
     suspend fun update(user: TricountEntity): Int

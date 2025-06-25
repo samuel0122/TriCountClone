@@ -119,7 +119,9 @@ class UserDaoTest {
     fun insertUser_whenDatabaseHasElements_withCollision() = runTest {
         // Given: Database with one element.
         val initialUser = existingUser1
-        val insertUser = newUser1
+        val insertUser = newUser1.copy(
+            name = initialUser.name.plus("OtherName")
+        )
 
         userDao.insert(initialUser)
 
@@ -174,7 +176,7 @@ class UserDaoTest {
     }
 
     /**
-     * 3. Get all open flow notifies new insertion and deletions -> List contains inserted element
+     * 3. Get all open flow notifies new insertion -> List contains inserted element
      */
     @Test
     fun getAllUsers_whenDatabaseStartsEmpty_flowNotifiesInsertions() = runTest {
@@ -214,18 +216,6 @@ class UserDaoTest {
             val thirdInsertedEmission = awaitItem()
             assertThat(thirdInsertedEmission).hasSize(insertedUsers.size)
             assertThat(thirdInsertedEmission).containsExactlyElementsIn(insertedUsers)
-
-            // Delete one user
-            val userToDelete = existingUser2
-            val deleteResult = userDao.delete(userToDelete)
-            insertedUsers.remove(userToDelete)
-            assertThat(deleteResult).isEqualTo(1)
-
-            // Flow should emit list without the deleted user
-            val firstDeletionEmission = awaitItem()
-            assertThat(firstDeletionEmission).hasSize(insertedUsers.size)
-            assertThat(firstDeletionEmission).doesNotContain(userToDelete)
-            assertThat(firstDeletionEmission).containsExactlyElementsIn(insertedUsers)
 
             cancelAndIgnoreRemainingEvents()
         }

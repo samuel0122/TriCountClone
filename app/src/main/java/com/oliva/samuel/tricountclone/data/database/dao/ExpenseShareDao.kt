@@ -16,7 +16,7 @@ interface ExpenseShareDao {
     fun getAll(): Flow<List<ExpenseShareEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: ExpenseShareEntity): Long
+    suspend fun insert(user: ExpenseShareEntity)
 
     @Update
     suspend fun update(user: ExpenseShareEntity): Int
