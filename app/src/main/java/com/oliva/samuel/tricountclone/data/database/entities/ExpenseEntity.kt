@@ -16,7 +16,7 @@ import java.util.UUID
             entity = ParticipantEntity::class,
             parentColumns = [TricountContract.TABLE_PARTICIPANT_COLUMN_ID],
             childColumns = [TricountContract.TABLE_EXPENSE_COLUMN_PAID_BY],
-            onDelete = ForeignKey.SET_NULL
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = TricountEntity::class,
@@ -42,7 +42,7 @@ data class ExpenseEntity(
     val amount: Double,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_PAID_BY)
-    val paidBy: UUID?,
+    val paidBy: UUID,
 
     @ColumnInfo(name = TricountContract.TABLE_EXPENSE_COLUMN_CREATED_AT)
     val createdAt: Date,

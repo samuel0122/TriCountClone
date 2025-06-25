@@ -9,7 +9,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
 import com.oliva.samuel.tricountclone.data.database.entities.TricountEntity
-import com.oliva.samuel.tricountclone.data.database.entities.relations.TricountWithParticipantsAndExpenses
+import com.oliva.samuel.tricountclone.data.database.entities.relations.TricountWithParticipantsAndExpensesRelation
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
@@ -23,7 +23,7 @@ interface TricountDao {
         "SELECT * FROM ${TricountContract.TABLE_TRICOUNT} " +
                 "WHERE ${TricountContract.TABLE_TRICOUNT_COLUMN_ID} = :tricountId"
     )
-    fun getTricountWithParticipantsAndExpenses(tricountId: UUID): Flow<TricountWithParticipantsAndExpenses>
+    fun getTricountWithParticipantsAndExpenses(tricountId: UUID): Flow<TricountWithParticipantsAndExpensesRelation>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: TricountEntity)

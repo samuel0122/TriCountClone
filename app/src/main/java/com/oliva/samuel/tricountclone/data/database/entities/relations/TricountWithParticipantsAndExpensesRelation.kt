@@ -7,7 +7,7 @@ import com.oliva.samuel.tricountclone.data.database.entities.ExpenseEntity
 import com.oliva.samuel.tricountclone.data.database.entities.ParticipantEntity
 import com.oliva.samuel.tricountclone.data.database.entities.TricountEntity
 
-data class TricountWithParticipantsAndExpenses(
+data class TricountWithParticipantsAndExpensesRelation(
     @Embedded val tricount: TricountEntity,
     @Relation(
         entity = ParticipantEntity::class,
