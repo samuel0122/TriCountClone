@@ -3,7 +3,7 @@ package com.oliva.samuel.tricountclone.domain.model
 import java.util.Date
 import java.util.UUID
 
-data class ExpenseItem(
+data class ExpenseModel(
     val id: UUID,
     val title: String,
     val amount: Double,

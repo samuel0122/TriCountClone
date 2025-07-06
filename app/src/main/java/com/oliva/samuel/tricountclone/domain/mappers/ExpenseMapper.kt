@@ -1,9 +1,9 @@
 package com.oliva.samuel.tricountclone.domain.mappers
 
 import com.oliva.samuel.tricountclone.data.database.entities.ExpenseEntity
-import com.oliva.samuel.tricountclone.domain.model.ExpenseItem
+import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
 
-fun ExpenseEntity.toDomain() = ExpenseItem(
+fun ExpenseEntity.toDomain() = ExpenseModel(
     id = id,
     title = title,
     amount = amount,
@@ -13,7 +13,7 @@ fun ExpenseEntity.toDomain() = ExpenseItem(
     note = note
 )
 
-fun ExpenseItem.toDatabase() = ExpenseEntity(
+fun ExpenseModel.toDatabase() = ExpenseEntity(
     id = id,
     title = title,
     amount = amount,

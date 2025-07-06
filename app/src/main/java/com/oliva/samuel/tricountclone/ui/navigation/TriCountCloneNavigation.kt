@@ -8,6 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import com.oliva.samuel.tricountclone.ui.screens.SplashScreen
 import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreen
 import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreenViewModel
+import com.oliva.samuel.tricountclone.ui.screens.tricountsScreen.TricountsScreen
+import com.oliva.samuel.tricountclone.ui.screens.tricountsScreen.TricountsScreenViewModel
 
 @Composable
 fun TriCountCloneNavigation() {
@@ -29,6 +31,15 @@ fun TriCountCloneNavigation() {
             MainScreen(
                 navController = navigationController,
                 mainScreenViewModel = mainScreenViewModel
+            )
+        }
+
+        composable(TriCountCloneRoutes.TricountsScreen.route) {
+            val tricountsScreenViewModel = hiltViewModel<TricountsScreenViewModel>()
+
+            TricountsScreen(
+                navController = navigationController,
+                tricountsScreenViewModel = tricountsScreenViewModel
             )
         }
     }

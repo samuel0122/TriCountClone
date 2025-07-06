@@ -1,9 +1,9 @@
 package com.oliva.samuel.tricountclone.domain.mappers
 
 import com.oliva.samuel.tricountclone.data.database.entities.TricountEntity
-import com.oliva.samuel.tricountclone.domain.model.TricountItem
+import com.oliva.samuel.tricountclone.domain.model.TricountModel
 
-fun TricountEntity.toDomain() = TricountItem(
+fun TricountEntity.toDomain() = TricountModel(
     id = id,
     title = title,
     icon = icon,
@@ -12,7 +12,7 @@ fun TricountEntity.toDomain() = TricountItem(
     createdAt = createdAt
 )
 
-fun TricountItem.toDatabase() = TricountEntity(
+fun TricountModel.toDatabase() = TricountEntity(
     id = id,
     title = title,
     icon = icon,

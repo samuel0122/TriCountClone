@@ -1,18 +1,18 @@
 package com.oliva.samuel.tricountclone.domain.mappers
 
 import com.oliva.samuel.tricountclone.data.database.entities.relations.TricountWithParticipantsAndExpensesRelation
-import com.oliva.samuel.tricountclone.domain.model.TricountWithParticipantsAndExpensesItem
+import com.oliva.samuel.tricountclone.domain.model.TricountWithParticipantsAndExpensesModel
 
 fun TricountWithParticipantsAndExpensesRelation.toDomain() =
-    TricountWithParticipantsAndExpensesItem(
-        tricountItem = tricount.toDomain(),
+    TricountWithParticipantsAndExpensesModel(
+        tricount = tricount.toDomain(),
         participants = participants.map { it.toDomain() },
         expenses = expenses.map { it.toDomain() }
     )
 
-fun TricountWithParticipantsAndExpensesItem.toDatabase() =
+fun TricountWithParticipantsAndExpensesModel.toDatabase() =
     TricountWithParticipantsAndExpensesRelation(
-        tricount = tricountItem.toDatabase(),
+        tricount = tricount.toDatabase(),
         participants = participants.map { it.toDatabase() },
         expenses = expenses.map { it.toDatabase() }
     )

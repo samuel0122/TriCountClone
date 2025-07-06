@@ -110,6 +110,10 @@ dependencies {
     // Icons
     implementation(libs.icons.extended)
 
+    // Preferences DataStore
+    implementation(libs.datastore.preferences)
+    implementation(libs.datastore.preferences.core)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

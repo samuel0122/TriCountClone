@@ -3,7 +3,6 @@ package com.oliva.samuel.tricountclone.ui.screens
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,7 +48,7 @@ fun SplashScreen(
         delay(500)
 
 
-        navController.navigate(route = TriCountCloneRoutes.MainScreen.route)
+        navController.navigate(route = TriCountCloneRoutes.TricountsScreen.route)
 
     }
 

@@ -18,6 +18,12 @@ interface UserDao {
     @Query("SELECT * FROM ${TricountContract.TABLE_USERS}")
     fun getAll(): Flow<List<UserEntity>>
 
+    @Query(
+        "SELECT * FROM ${TricountContract.TABLE_USERS} " +
+                "WHERE ${TricountContract.TABLE_USERS_COLUMN_ID} = :id"
+    )
+    suspend fun getUser(id: UUID): UserEntity?
+
     @Transaction
     @Query(
         "SELECT * FROM ${TricountContract.TABLE_USERS} " +
