@@ -5,6 +5,9 @@ plugins {
 
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.dagger.hilt.android)
+
+    alias(libs.plugins.kotlinx.serialization.json)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -82,6 +85,9 @@ dependencies {
 
     // Navigation Compose (navController & navHost)
     implementation(libs.androidx.navigation)
+
+    // Serialization Json
+    implementation(libs.kotlinx.serialization.json)
 
     // LiveData
     implementation(libs.androidx.lifecycle.runtime.ktx)

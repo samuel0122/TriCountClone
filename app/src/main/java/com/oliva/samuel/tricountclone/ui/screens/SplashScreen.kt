@@ -24,14 +24,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.oliva.samuel.tricountclone.ui.navigation.TriCountCloneRoutes
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navController: NavController
+    navigateToMainScreen: () -> Unit
 ) {
     val scale = remember { Animatable(0f) }
     LaunchedEffect(key1 = true) {
@@ -48,8 +45,7 @@ fun SplashScreen(
         delay(500)
 
 
-        navController.navigate(route = TriCountCloneRoutes.TricountsScreen.route)
-
+        navigateToMainScreen()
     }
 
     Column(
@@ -96,9 +92,5 @@ fun SplashScreen(
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
-    val navigationController = rememberNavController()
-
-    SplashScreen(
-        navController = navigationController
-    )
+    SplashScreen {}
 }

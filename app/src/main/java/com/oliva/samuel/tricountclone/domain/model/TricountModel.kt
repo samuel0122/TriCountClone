@@ -8,7 +8,7 @@ data class TricountModel(
     val id: UUID,
     var title: String,
     var icon: String,
-    var currency: String,
+    var currency: Currency,
     val createdBy: UUID,
     val createdAt: Date
 ) {
@@ -16,8 +16,8 @@ data class TricountModel(
         fun default(): TricountModel = TricountModel(
             id = UUID.randomUUID(),
             title = "",
-            icon = "",
-            currency = "",
+            icon = "🏖️",
+            currency = Currency.Euro,
             createdBy = UUID.randomUUID(),
             createdAt = Date.from(Instant.now())
         )

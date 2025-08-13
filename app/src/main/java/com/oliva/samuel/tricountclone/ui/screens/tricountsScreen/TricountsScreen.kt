@@ -17,16 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import com.oliva.samuel.tricountclone.ui.components.tricount.TricountsList
-import com.oliva.samuel.tricountclone.ui.dialogs.tricount.AddTricountDialog
+import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addTricount.AddTricountDialog
 import com.oliva.samuel.tricountclone.utils.Resource
+import java.util.UUID
 
 @Composable
 fun TricountsScreen(
-    navController: NavController,
-    tricountsScreenViewModel: TricountsScreenViewModel
+    tricountsScreenViewModel: TricountsScreenViewModel,
+    navigateToTricountDetail: (UUID) -> Unit
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val showAddTricountDialog by tricountsScreenViewModel.showAddTricountDialog.observeAsState(false)
@@ -56,9 +56,9 @@ fun TricountsScreen(
 
         is Resource.Success -> {
             TricountsScreenScaffold(
-                navController = navController,
-                tricountsScreenViewModel = tricountsScreenViewModel,
-                tricountsList = tricountsList.data
+                tricountsList = tricountsList.data,
+                onAddTricount = { tricountsScreenViewModel.onShowAddTricountDialogClick() },
+                onTricountSelected = { navigateToTricountDetail(it.id) }
             )
         }
     }
@@ -72,24 +72,22 @@ fun TricountsScreen(
 
 @Composable
 fun TricountsScreenScaffold(
-    navController: NavController,
-    tricountsScreenViewModel: TricountsScreenViewModel,
-    tricountsList: List<TricountModel>
+    tricountsList: List<TricountModel>,
+    onAddTricount: () -> Unit,
+    onTricountSelected: (TricountModel) -> Unit
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { tricountsScreenViewModel.onShowAddTricountDialogClick() }
+                onClick = onAddTricount
             ) { Icon(imageVector = Icons.Filled.Add, contentDescription = "Add task") }
         }
     ) { innerPadding ->
         TricountsList(
             modifier = Modifier.padding(innerPadding),
             tricountsList = tricountsList,
-            onTricountSelected = {
-
-            }
+            onTricountSelected = onTricountSelected
         )
     }
 }

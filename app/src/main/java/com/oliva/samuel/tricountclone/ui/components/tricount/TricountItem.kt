@@ -1,6 +1,7 @@
 package com.oliva.samuel.tricountclone.ui.components.tricount
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.oliva.samuel.tricountclone.domain.model.Currency
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import java.time.Instant
 import java.util.Date
@@ -37,7 +39,8 @@ fun TricountItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(8.dp)
+                .clickable { onTricountSelected(tricountModel) },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -80,7 +83,7 @@ fun TricountItemPreview() {
                 id = UUID.randomUUID(),
                 title = "Moros y Rafidash",
                 icon = "🎡",
-                currency = "€",
+                currency = Currency.Euro,
                 createdBy = UUID.randomUUID(),
                 createdAt = Date.from(Instant.now())
             )
