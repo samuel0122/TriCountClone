@@ -39,8 +39,8 @@ fun TricountItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { onTricountSelected(tricountModel) },
+                .clickable { onTricountSelected(tricountModel) }
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(

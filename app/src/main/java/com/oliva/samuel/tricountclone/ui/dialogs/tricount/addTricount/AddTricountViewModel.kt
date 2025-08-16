@@ -5,8 +5,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.oliva.samuel.tricountclone.domain.AddParticipantUseCase
-import com.oliva.samuel.tricountclone.domain.AddTricountUseCase
 import com.oliva.samuel.tricountclone.domain.GetLoggedUserUseCase
 import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
@@ -16,9 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTricountViewModel @Inject constructor(
-    private val getLoggedUserUseCase: GetLoggedUserUseCase,
-    private val addTricountUseCase: AddTricountUseCase,
-    private val addParticipantUseCase: AddParticipantUseCase
+    private val getLoggedUserUseCase: GetLoggedUserUseCase
 ) : ViewModel() {
     private val _tricountModel = mutableStateOf(TricountModel.default())
     val tricountModel: State<TricountModel>
@@ -72,20 +68,14 @@ class AddTricountViewModel @Inject constructor(
     }
 
     fun onSubmit(
-        onSubmitted: (TricountModel) -> Unit
+        onSubmitted: (TricountModel, List<ParticipantModel>) -> Unit
     ) {
         viewModelScope.launch {
-            addTricountUseCase(
-                tricountModel = tricountModel.value
-            )
-
-            addParticipantUseCase(userParticipant.value)
-
-            participantsList
+            val tricountParticipants = participantsList
                 .filter { it.name.isNotEmpty() }
-                .forEach { addParticipantUseCase(it) }
+                .plus(userParticipant.value)
 
-            onSubmitted(tricountModel.value)
+            onSubmitted(tricountModel.value, tricountParticipants)
         }
     }
 }

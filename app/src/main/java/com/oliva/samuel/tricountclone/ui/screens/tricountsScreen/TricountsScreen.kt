@@ -10,13 +10,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import com.oliva.samuel.tricountclone.ui.components.tricount.TricountsList
 import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addTricount.AddTricountDialog
@@ -28,20 +25,8 @@ fun TricountsScreen(
     tricountsScreenViewModel: TricountsScreenViewModel,
     navigateToTricountDetail: (UUID) -> Unit
 ) {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val uiState by tricountsScreenViewModel.tricountsList.collectAsState()
     val showAddTricountDialog by tricountsScreenViewModel.showAddTricountDialog.observeAsState(false)
-
-    val uiState by produceState<Resource<List<TricountModel>>>(
-        initialValue = Resource.Loading,
-        key1 = lifecycle,
-        key2 = tricountsScreenViewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            tricountsScreenViewModel.tricountsList.collect {
-                value = it
-            }
-        }
-    }
 
     when (val tricountsList = uiState) {
         is Resource.Error -> {
@@ -57,7 +42,7 @@ fun TricountsScreen(
         is Resource.Success -> {
             TricountsScreenScaffold(
                 tricountsList = tricountsList.data,
-                onAddTricount = { tricountsScreenViewModel.onShowAddTricountDialogClick() },
+                onAddTricount = tricountsScreenViewModel::onShowAddTricountDialogClick,
                 onTricountSelected = { navigateToTricountDetail(it.id) }
             )
         }
@@ -65,8 +50,8 @@ fun TricountsScreen(
 
     AddTricountDialog(
         show = showAddTricountDialog,
-        onDismiss = { tricountsScreenViewModel.onDismissAddTricountDialog() },
-        onTricountAdded = { tricountsScreenViewModel.onTricountAdded(it) }
+        onDismiss = tricountsScreenViewModel::onDismissAddTricountDialog,
+        onTricountAdded = tricountsScreenViewModel::onTricountAdded
     )
 }
 
