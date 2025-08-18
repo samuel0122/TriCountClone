@@ -22,6 +22,7 @@ import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import com.oliva.samuel.tricountclone.domain.model.TricountWithParticipantsAndExpensesModel
 import com.oliva.samuel.tricountclone.ui.components.expense.ExpensesList
+import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addExpense.AddExpenseDialog
 import com.oliva.samuel.tricountclone.utils.Resource
 
 @Composable
@@ -29,6 +30,7 @@ fun TricountDetailScreen(
     tricountDetailViewModel: TricountDetailViewModel
 ) {
     val uiState by tricountDetailViewModel.tricount.collectAsState()
+    val showAddExpenseDialog by tricountDetailViewModel.showAddExpenseDialog.observeAsState(false)
 
     when (val tricountsInfo = uiState) {
         is Resource.Error -> {
@@ -45,7 +47,14 @@ fun TricountDetailScreen(
             TricountDetailScreenScaffold(
                 tricountWithParticipantsAndExpensesModel = tricountsInfo.data,
                 onAddExpense = tricountDetailViewModel::onShowAddExpenseDialogClick,
-                onExpenseSelected = {}
+                onExpenseSelected = { }
+            )
+
+            AddExpenseDialog(
+                show = showAddExpenseDialog,
+                tricountId = tricountsInfo.data.tricount.id,
+                onDismiss = tricountDetailViewModel::onDismissAddExpenseDialog,
+                onExpenseAdded = tricountDetailViewModel::onExpenseAdded
             )
         }
     }

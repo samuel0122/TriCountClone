@@ -98,9 +98,9 @@ fun CapsuleDropdownMenu(
 @Preview(showBackground = true)
 @Composable
 fun DropdownMenuPreview() {
-    var selectedText by remember { mutableStateOf(Currency.toString(Currency.Euro)) }
+    var selectedText by remember { mutableStateOf(Currency.Euro.string) }
     CapsuleDropdownMenu(
-        items = Currency.entries.map { Currency.toString(it) },
+        items = Currency.entries.map { it.string },
         title = "Currency",
         selectedItem = selectedText,
         onDismiss = {},
