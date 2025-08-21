@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.Currency
 import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
 import com.oliva.samuel.tricountclone.domain.model.ExpenseShareModel
@@ -24,17 +25,20 @@ import com.oliva.samuel.tricountclone.ui.components.CapsuleTextField
 import com.oliva.samuel.tricountclone.ui.components.CurrencyTextField
 import com.oliva.samuel.tricountclone.ui.components.CurrencyTextFieldType
 import com.oliva.samuel.tricountclone.ui.components.expenseShare.EditParticipantsExpenseSharesList
+import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
+import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 
 
 @Composable
 fun ExpenseForm(
-    expenseModel: ExpenseModel,
-    participants: List<ParticipantModel>,
-    expenseSharesList: List<ExpenseShareModel>,
+    expenseModel: ExpenseUiModel,
+    participants: List<ParticipantUiModel>,
+    expenseSharesList: List<ExpenseShareUiModel>,
     expenseCurrency: Currency,
-    onExpenseModelChanged: (ExpenseModel) -> Unit,
-    onAddParticipantExpenseShare: (ParticipantModel) -> Unit,
-    onRemoveParticipantExpenseShare: (ParticipantModel) -> Unit,
+    onExpenseModelChanged: (ExpenseUiModel) -> Unit,
+    onAddParticipantExpenseShare: (ParticipantUiModel) -> Unit,
+    onRemoveParticipantExpenseShare: (ParticipantUiModel) -> Unit,
     onSubmitClick: () -> Unit
 ) {
     Column(
@@ -132,15 +136,16 @@ fun ExpenseForm(
 @Composable
 fun ExpenseFormPreview() {
     val participantsList = listOf(
-        ParticipantModel.default().copy(name = "User"),
-        ParticipantModel.default().copy(name = "Participant 1"),
-        ParticipantModel.default().copy(name = "Participant 2")
+        ParticipantModel.default().copy(name = "User").toUiModel(),
+        ParticipantModel.default().copy(name = "Participant 1").toUiModel(),
+        ParticipantModel.default().copy(name = "Participant 2").toUiModel()
     )
     ExpenseForm(
-        expenseModel = ExpenseModel.default(),
+        expenseModel = ExpenseModel.default().toUiModel(),
         participants = participantsList,
         expenseSharesList = listOf(
             ExpenseShareModel.default().copy(participantId = participantsList.first().id)
+                .toUiModel()
         ),
         expenseCurrency = Currency.Euro,
         onExpenseModelChanged = {},

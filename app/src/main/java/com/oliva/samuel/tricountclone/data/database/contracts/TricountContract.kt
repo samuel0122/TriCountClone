@@ -39,7 +39,7 @@ object TricountContract {
 
     // Expense Share Table Definition
     const val TABLE_EXPENSE_SHARE = "expenseShare"
-    const val TABLE_EXPENSE_SHARE_COLUMN_ID = "expenseId" // ExpenseEntity
+    const val TABLE_EXPENSE_SHARE_COLUMN_EXPENSE_ID = "expenseId" // ExpenseEntity
     const val TABLE_EXPENSE_SHARE_COLUMN_PARTICIPANTS_ID = "participantsId" // ParticipantEntity
     const val TABLE_EXPENSE_SHARE_COLUMN_AMOUNT_OWNED = "amountOwner"
 }

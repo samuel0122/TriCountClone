@@ -3,8 +3,8 @@ package com.oliva.samuel.tricountclone.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.oliva.samuel.tricountclone.core.UserId
 import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
-import java.util.UUID
 
 @Entity(
     tableName = TricountContract.TABLE_USERS
@@ -12,7 +12,7 @@ import java.util.UUID
 data class UserEntity(
     @PrimaryKey
     @ColumnInfo(name = TricountContract.TABLE_USERS_COLUMN_ID)
-    val id: UUID = UUID.randomUUID(),
+    val id: UserId = UserId.randomUUID(),
 
     @ColumnInfo(name = TricountContract.TABLE_USERS_COLUMN_NAME)
     val name: String

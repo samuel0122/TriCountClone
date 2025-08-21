@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import com.oliva.samuel.tricountclone.core.TricountId
 import com.oliva.samuel.tricountclone.data.database.TricountDatabase
 import com.oliva.samuel.tricountclone.data.database.entities.TricountEntity
 import com.oliva.samuel.tricountclone.data.database.entities.UserEntity
@@ -16,7 +17,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.Date
-import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -41,7 +41,7 @@ class UserDaoTest {
         createdAt = Date()
     )
     private val tricount2 = TricountEntity(
-        id = UUID.randomUUID(),
+        id = TricountId.randomUUID(),
         title = "Tricount 2",
         icon = "icon2",
         currency = "USD",
@@ -84,7 +84,7 @@ class UserDaoTest {
         userDao.insert(insertUser)
 
         // Then: Database only contains inserted user.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(allUsers).hasSize(1)
         assertThat(allUsers).containsExactly(insertUser)
@@ -106,7 +106,7 @@ class UserDaoTest {
         userDao.insert(insertUser)
 
         // Then: Database contains previous users and new one.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(allUsers).hasSize(finalUsers.size)
         assertThat(allUsers).containsExactlyElementsIn(finalUsers)
@@ -129,7 +129,7 @@ class UserDaoTest {
         userDao.insert(insertUser)
 
         // Then: The previous user was replaced by the new one.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(allUsers).hasSize(1)
         assertThat(allUsers).containsExactly(insertUser)
@@ -148,11 +148,11 @@ class UserDaoTest {
      * 1. Get all on empty Table -> Empty list
      */
     @Test
-    fun getAllUsers_whenDatabaseIsEmpty() = runTest {
+    fun getAllFlowUsers_whenDatabaseIsEmpty() = runTest {
         // Given: Empty database.
 
         // When: Get all users.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         // Then: Returned list is empty.
         assertThat(allUsers).isEmpty()
@@ -162,13 +162,13 @@ class UserDaoTest {
      * 2. Get all on non empty Table -> List contains only inserted elements.
      */
     @Test
-    fun getAllUsers_whenDatabaseHasElements() = runTest {
+    fun getAllFlowUsers_whenDatabaseHasElements() = runTest {
         // Given: Database with initial users.
         val initialUsers = listOf(existingUser1, existingUser2, existingUser3)
         initialUsers.forEach { userDao.insert(it) }
 
         // When: Get all users.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         // Then: Returned list contains exactly the inserted users.
         assertThat(allUsers).hasSize(initialUsers.size)
@@ -179,11 +179,11 @@ class UserDaoTest {
      * 3. Get all open flow notifies new insertion -> List contains inserted element
      */
     @Test
-    fun getAllUsers_whenDatabaseStartsEmpty_flowNotifiesInsertions() = runTest {
+    fun getAllFlowUsers_whenDatabaseStartsEmpty_flowNotifiesInsertions() = runTest {
         // Given: Empty database.
 
         // When: Get all users.
-        val allUsersFlow = userDao.getAll()
+        val allUsersFlow = userDao.getAllFlow()
 
         allUsersFlow.test {
             // Then: Initial list is empty, then it fills up.
@@ -225,13 +225,13 @@ class UserDaoTest {
      * 4. Get all open flow notifies new deletions -> List contains inserted element
      */
     @Test
-    fun getAllUsers_whenDatabaseStartsWithElements_flowNotifiesDeletions() = runTest {
+    fun getAllFlowUsers_whenDatabaseStartsWithElements_flowNotifiesDeletions() = runTest {
         // Given: Full database.
         val initialUsers = listOf(existingUser1, existingUser2, existingUser3)
         initialUsers.forEach { userDao.insert(it) }
 
         // When: Get all users.
-        val allUsersFlow = userDao.getAll()
+        val allUsersFlow = userDao.getAllFlow()
 
         allUsersFlow.test {
             val initialEmission = awaitItem()
@@ -253,14 +253,14 @@ class UserDaoTest {
      * 5. Get all open flow notifies updates -> List contains updated element
      */
     @Test
-    fun getAllUsers_flowNotifiesUpdate() = runTest {
+    fun getAllFlowUsers_flowNotifiesUpdate() = runTest {
         // Given: Database with one element.
         val userOriginal = existingUser1
         val updatedUser = userOriginal.copy(name = "Updated Name")
 
         userDao.insert(userOriginal)
 
-        val flow = userDao.getAll()
+        val flow = userDao.getAllFlow()
 
         flow.test {
             val initialEmission = awaitItem()
@@ -293,7 +293,7 @@ class UserDaoTest {
         // Given: Empty dataset.
 
         // When: Get user with tricounts in empty dataset.
-        val getUser = userDao.getUserWithCreatedTricounts(existingUser1.id).first()
+        val getUser = userDao.getUserWithCreatedTricountsFlow(existingUser1.id).first()
 
         // Then: It's null.
         assertThat(getUser).isNull()
@@ -311,7 +311,7 @@ class UserDaoTest {
         initialUsers.forEach { userDao.insert(it) }
 
         // When: Get user that exists.
-        val getUser = userDao.getUserWithCreatedTricounts(userToGet.id).first()
+        val getUser = userDao.getUserWithCreatedTricountsFlow(userToGet.id).first()
 
         // Then: Get user is same than inserted and has no tricounts.
         assertThat(getUser).isNotNull()
@@ -335,7 +335,7 @@ class UserDaoTest {
         tricounts.forEach { tricountDao.insert(it) }
 
         // When: Get user with tricounts.
-        val getUser = userDao.getUserWithCreatedTricounts(userToGet.id).first()
+        val getUser = userDao.getUserWithCreatedTricountsFlow(userToGet.id).first()
 
         // Then: User and their tricounts match the inserted ones.
         assertThat(getUser).isNotNull()
@@ -366,7 +366,7 @@ class UserDaoTest {
         tricountsFromOtherUser.forEach { tricountDao.insert(it) }
 
         // When: Get user with tricounts.
-        val getUser = userDao.getUserWithCreatedTricounts(userToGet.id).first()
+        val getUser = userDao.getUserWithCreatedTricountsFlow(userToGet.id).first()
 
         // Then: Solo debe tener los tricounts creados por él.
         assertThat(getUser).isNotNull()
@@ -386,7 +386,7 @@ class UserDaoTest {
         initialUsers.forEach { userDao.insert(it) }
 
         // When: Get user that does not exist.
-        val getUser = userDao.getUserWithCreatedTricounts(userToGet.id).first()
+        val getUser = userDao.getUserWithCreatedTricountsFlow(userToGet.id).first()
 
         // Then: It's null.
         assertThat(getUser).isNull()
@@ -411,7 +411,7 @@ class UserDaoTest {
         val updateResult = userDao.update(updateUser)
 
         // Then: No rows updated and table is still empty.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(updateResult).isEqualTo(0)
         assertThat(allUsers).isEmpty()
@@ -430,7 +430,7 @@ class UserDaoTest {
         val updateResult = userDao.update(updatedUser)
 
         // Then: Exactly one row updated and user is updated in table.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(updateResult).isEqualTo(1)
         assertThat(allUsers).hasSize(1)
@@ -451,7 +451,7 @@ class UserDaoTest {
         val updateResult = userDao.update(nonExistingUser)
 
         // Then: No rows updated and table remains unchanged.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(updateResult).isEqualTo(0)
         assertThat(allUsers).hasSize(initialUsers.size)
@@ -477,7 +477,7 @@ class UserDaoTest {
         val deleteResult = userDao.delete(existingUser1)
 
         // Then: No users in database and deleteResult is 0
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(0)
         assertThat(allUsers).isEmpty()
@@ -497,7 +497,7 @@ class UserDaoTest {
         val deleteResult = userDao.delete(existingUser1)
 
         // Then: User removed and only remaining users present.
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(1)
         assertThat(allUsers).hasSize(1)
@@ -519,8 +519,8 @@ class UserDaoTest {
         val deleteResult = userDao.delete(existingUser1)
 
         // Then: User and its tricounts are removed
-        val allUsers = userDao.getAll().first()
-        val allTricounts = tricountDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(1)
         assertThat(allUsers).isEmpty()
@@ -539,7 +539,7 @@ class UserDaoTest {
         val deleteResult = userDao.delete(existingUser2)
 
         // Then: Database unchanged
-        val allUsers = userDao.getAll().first()
+        val allUsers = userDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(0)
         assertThat(allUsers).hasSize(1)

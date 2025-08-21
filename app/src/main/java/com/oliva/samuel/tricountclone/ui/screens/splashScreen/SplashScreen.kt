@@ -1,4 +1,4 @@
-package com.oliva.samuel.tricountclone.ui.screens
+package com.oliva.samuel.tricountclone.ui.screens.splashScreen
 
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
@@ -16,6 +16,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,30 +26,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SplashScreen(
-    navigateToMainScreen: () -> Unit
+    splashViewModel: SplashViewModel,
+    navigateToTricounts: () -> Unit
 ) {
-    val scale = remember { Animatable(0f) }
-    LaunchedEffect(key1 = true) {
-        scale.animateTo(
-            targetValue = 0.9f,
-            animationSpec = tween(
-                durationMillis = 800,
-                easing = {
-                    OvershootInterpolator(2f).getInterpolation(it)
-                }
-            )
-        )
+    val uiState by splashViewModel.state.collectAsState()
 
-        delay(500)
-
-
-        navigateToMainScreen()
+    LaunchedEffect(Unit) {
+        splashViewModel.effect.collect { effect ->
+            when (effect) {
+                SplashEffect.NavigateToTricounts -> navigateToTricounts()
+            }
+        }
     }
 
+    if (uiState.isLoading) {
+        val scale = remember { Animatable(0f) }
+
+        LaunchedEffect(Unit) {
+            scale.animateTo(
+                targetValue = 0.9f,
+                animationSpec = tween(
+                    durationMillis = 800,
+                    easing = {
+                        OvershootInterpolator(2f).getInterpolation(it)
+                    }
+                )
+            )
+
+            splashViewModel.onEvent(SplashEvent.OnAnimationFinished)
+        }
+
+        SplashContent(scale = scale.value)
+    }
+}
+
+@Composable
+private fun SplashContent(scale: Float) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +77,7 @@ fun SplashScreen(
             modifier = Modifier
                 .padding(15.dp)
                 .size(330.dp)
-                .scale(scale.value)
+                .scale(scale)
         ) {
             Column(
                 modifier = Modifier
@@ -74,9 +92,7 @@ fun SplashScreen(
                     color = Color.DarkGray
                 )
 
-                Spacer(
-                    modifier = Modifier.height(15.dp)
-                )
+                Spacer(modifier = Modifier.height(15.dp))
 
                 Text(
                     text = "Manage your accounts",
@@ -92,5 +108,10 @@ fun SplashScreen(
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen {}
+    val splashViewModel = hiltViewModel<SplashViewModel>()
+
+    SplashScreen(
+        splashViewModel = splashViewModel,
+        navigateToTricounts = {}
+    )
 }

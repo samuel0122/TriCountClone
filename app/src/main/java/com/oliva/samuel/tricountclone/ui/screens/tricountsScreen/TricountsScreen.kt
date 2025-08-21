@@ -14,16 +14,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import com.oliva.samuel.tricountclone.domain.model.TricountModel
+import com.oliva.samuel.tricountclone.core.TricountId
 import com.oliva.samuel.tricountclone.ui.components.tricount.TricountsList
 import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addTricount.AddTricountDialog
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 import com.oliva.samuel.tricountclone.utils.Resource
-import java.util.UUID
 
 @Composable
 fun TricountsScreen(
     tricountsScreenViewModel: TricountsScreenViewModel,
-    navigateToTricountDetail: (UUID) -> Unit
+    navigateToTricountDetail: (TricountId) -> Unit
 ) {
     val uiState by tricountsScreenViewModel.tricountsList.collectAsState()
     val showAddTricountDialog by tricountsScreenViewModel.showAddTricountDialog.observeAsState(false)
@@ -57,9 +57,9 @@ fun TricountsScreen(
 
 @Composable
 fun TricountsScreenScaffold(
-    tricountsList: List<TricountModel>,
+    tricountsList: List<TricountUiModel>,
     onAddTricount: () -> Unit,
-    onTricountSelected: (TricountModel) -> Unit
+    onTricountSelected: (TricountUiModel) -> Unit
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),

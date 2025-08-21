@@ -12,16 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
+import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
 
 @Composable
 fun ExpenseItem(
     modifier: Modifier = Modifier,
-    expenseModel: ExpenseModel,
-    onExpenseSelected: (ExpenseModel) -> Unit
+    expenseModel: ExpenseUiModel,
+    onExpenseSelected: (ExpenseUiModel) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -63,7 +64,7 @@ fun ExpenseItem(
 @Composable
 fun ExpenseItemPreview() {
     ExpenseItem(
-        expenseModel = ExpenseModel.default(),
+        expenseModel = ExpenseModel.default().toUiModel(),
         onExpenseSelected = {}
     )
 }

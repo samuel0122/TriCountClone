@@ -23,17 +23,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
 import com.oliva.samuel.tricountclone.ui.components.BorderlessTextField
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 
 @Composable
 fun AddParticipantsList(
     modifier: Modifier = Modifier,
-    userParticipant: ParticipantModel,
-    participants: List<ParticipantModel>,
-    onParticipantModelChanged: (ParticipantModel) -> Unit,
+    userParticipant: ParticipantUiModel,
+    participants: List<ParticipantUiModel>,
+    onParticipantModelChanged: (ParticipantUiModel) -> Unit,
     onAddParticipant: () -> Unit,
-    onRemoveParticipant: (ParticipantModel) -> Unit
+    onRemoveParticipant: (ParticipantUiModel) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -113,11 +115,11 @@ fun AddParticipantsListPreview() {
                 .padding(innerPadding)
                 .fillMaxWidth(),
             userParticipant = ParticipantModel.default()
-                .copy(name = "Samuel"),
+                .copy(name = "Samuel").toUiModel(),
             participants = listOf(
                 ParticipantModel.default()
-                    .copy(name = "Jose"),
-                ParticipantModel.default()
+                    .copy(name = "Jose").toUiModel(),
+                ParticipantModel.default().toUiModel()
             ),
             onParticipantModelChanged = {},
             onAddParticipant = {},

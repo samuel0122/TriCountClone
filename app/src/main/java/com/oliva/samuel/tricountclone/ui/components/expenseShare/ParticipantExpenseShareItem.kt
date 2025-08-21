@@ -14,19 +14,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.Currency
-import com.oliva.samuel.tricountclone.domain.model.ExpenseShareModel
 import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
 import com.oliva.samuel.tricountclone.ui.components.CircularCheckbox
+import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 import com.oliva.samuel.tricountclone.utils.StringFormats
 
 @Composable
 fun ParticipantExpenseShareItem(
     modifier: Modifier = Modifier,
-    participantModel: ParticipantModel,
-    expenseShareModel: ExpenseShareModel?,
+    participantModel: ParticipantUiModel,
+    expenseShareModel: ExpenseShareUiModel?,
     expenseCurrency: Currency,
-    onParticipantExpenseShareSelected: (ParticipantModel) -> Unit
+    onParticipantExpenseShareSelected: (ParticipantUiModel) -> Unit
 ) {
     val isChecked = expenseShareModel != null
 
@@ -72,7 +74,7 @@ fun ParticipantExpenseShareItem(
 @Composable
 fun ParticipantExpenseShareItemPreview() {
     ParticipantExpenseShareItem(
-        participantModel = ParticipantModel.default().copy(name = "Samuel"),
+        participantModel = ParticipantModel.default().copy(name = "Samuel").toUiModel(),
         expenseShareModel = null,
         expenseCurrency = Currency.Euro,
         onParticipantExpenseShareSelected = {}

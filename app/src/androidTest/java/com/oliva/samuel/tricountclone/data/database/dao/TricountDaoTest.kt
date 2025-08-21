@@ -175,7 +175,7 @@ class TricountDaoTest {
         tricountDao.insert(insertedTricount)
 
         // Then: Table only contains inserted tricount
-        val tricounts = tricountDao.getAll().first()
+        val tricounts = tricountDao.getAllFlow().first()
 
         assertThat(tricounts).hasSize(1)
         assertThat(tricounts).containsExactly(insertedTricount)
@@ -199,7 +199,7 @@ class TricountDaoTest {
         tricountDao.insert(insertTricount)
 
         // Then: Both tricounts present
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
         assertThat(allTricounts).hasSize(finalTricounts.size)
         assertThat(allTricounts).containsExactlyElementsIn(finalTricounts)
     }
@@ -223,7 +223,7 @@ class TricountDaoTest {
         tricountDao.insert(insertTricount)
 
         // Then: The previous user was replaced by the new one.
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(allTricounts).hasSize(1)
         assertThat(allTricounts).containsExactly(insertTricount)
@@ -242,11 +242,11 @@ class TricountDaoTest {
      * 1. Get all on empty Table -> Empty list
      */
     @Test
-    fun getAllTricounts_whenDatabaseIsEmpty() = runTest {
+    fun getAllFlowTricounts_whenDatabaseIsEmpty() = runTest {
         // Given: Empty database.
 
         // When: Get all tricounts.
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         // Then: Returned list is empty.
         assertThat(allTricounts).isEmpty()
@@ -256,7 +256,7 @@ class TricountDaoTest {
      * 2. Get all on non empty Table -> List contains only inserted elements.
      */
     @Test
-    fun getAllTricounts_whenDatabaseHasElements() = runTest {
+    fun getAllFlowTricounts_whenDatabaseHasElements() = runTest {
         // Given: Existing user and inserted tricounts
         val user = existingUser1
         val insertedTricounts = listOf(tricount1fromUser1, tricount2fromUser1)
@@ -265,7 +265,7 @@ class TricountDaoTest {
         insertedTricounts.forEach { tricountDao.insert(it) }
 
         // When: Get all tricounts.
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         // Then: Returned list contains exactly the inserted tricounts.
         assertThat(allTricounts).hasSize(insertedTricounts.size)
@@ -276,12 +276,12 @@ class TricountDaoTest {
      * 3. Get all open flow notifies new insertion -> List contains inserted element
      */
     @Test
-    fun getAllTricounts_whenDatabaseStartsEmpty_flowNotifiesInsertions() = runTest {
+    fun getAllFlowTricounts_whenDatabaseStartsEmpty_flowNotifiesInsertions() = runTest {
         // Given: Existing user
         userDao.insert(existingUser1)
 
         // When: Get all tricounts.
-        val allTricountsFlow = tricountDao.getAll()
+        val allTricountsFlow = tricountDao.getAllFlow()
 
         allTricountsFlow.test {
             // Then: Initial list is empty
@@ -315,13 +315,13 @@ class TricountDaoTest {
      * 4. Get all open flow notifies deletions -> List contains updated list
      */
     @Test
-    fun getAllTricounts_whenDatabaseStartsWithElements_flowNotifiesDeletions() = runTest {
+    fun getAllFlowTricounts_whenDatabaseStartsWithElements_flowNotifiesDeletions() = runTest {
         // Given: Existing user and tricounts, and get tricounts flow is opened.
         userDao.insert(existingUser1)
         val initialTricounts = listOf(tricount1fromUser1, tricount2fromUser1)
         initialTricounts.forEach { tricountDao.insert(it) }
 
-        val allTricountsFlow = tricountDao.getAll()
+        val allTricountsFlow = tricountDao.getAllFlow()
 
         allTricountsFlow.test {
             val initialEmission = awaitItem()
@@ -344,7 +344,7 @@ class TricountDaoTest {
      * 5. Get all open flow notifies updates -> List contains updated element
      */
     @Test
-    fun getAllTricounts_flowNotifiesUpdate() = runTest {
+    fun getAllFlowTricounts_flowNotifiesUpdate() = runTest {
         // Given: Existing user and tricount, and opened tricount flow.
         userDao.insert(existingUser1)
         val tricountOriginal = tricount1fromUser1
@@ -354,7 +354,7 @@ class TricountDaoTest {
 
         tricountDao.insert(tricountOriginal)
 
-        val flow = tricountDao.getAll()
+        val flow = tricountDao.getAllFlow()
 
         flow.test {
             val initialEmission = awaitItem()
@@ -384,12 +384,12 @@ class TricountDaoTest {
      * 1. Get on empty Dataset -> Gets null
      */
     @Test
-    fun getTricountWithParticipantsAndExpenses_whenDatabaseIsEmpty() = runTest {
+    fun getTricountFlowWithParticipantsAndExpenses_whenDatabaseIsEmpty() = runTest {
         // Given: Empty dataset.
 
         // When: Get tricount with relations
         val result =
-            tricountDao.getTricountWithParticipantsAndExpenses(tricount1fromUser1.id).first()
+            tricountDao.getTricountWithParticipantsAndExpensesFlow(tricount1fromUser1.id).first()
 
         // Then: It's null
         assertThat(result).isNull()
@@ -400,14 +400,14 @@ class TricountDaoTest {
      * 2. Get on non empty Dataset with Tricount without Participants or Expenses -> Gets Tricount with empty lists
      */
     @Test
-    fun getTricountWithParticipantsAndExpenses_whenTricountExistsWithNoRelations() = runTest {
+    fun getTricountWithParticipantsAndExpenses_whenTricountFlowExistsWithNoRelationsFlow() = runTest {
         // Given: User and tricount inserted
         userDao.insert(existingUser1)
         tricountDao.insert(tricount1fromUser1)
 
         // When: Get tricount with relations
         val result =
-            tricountDao.getTricountWithParticipantsAndExpenses(tricount1fromUser1.id).first()
+            tricountDao.getTricountWithParticipantsAndExpensesFlow(tricount1fromUser1.id).first()
 
         // Then: Tricount matches and lists are empty
         assertThat(result).isNotNull()
@@ -420,7 +420,7 @@ class TricountDaoTest {
      * 3. Get on non empty Dataset with Tricount with Participants and Expenses -> Gets Tricount with correct lists
      */
     @Test
-    fun getTricountWithParticipantsAndExpenses_whenTricountHasParticipantsAndExpenses() = runTest {
+    fun getTricountWithParticipantsAndExpenses_whenTricountFlowHasParticipantsAndExpensesFlow() = runTest {
         // Given: User, tricount, participants and expenses
         userDao.insert(existingUser1)
         tricountDao.insert(tricount1fromUser1)
@@ -433,7 +433,7 @@ class TricountDaoTest {
 
         // When: Get tricount with relations
         val result =
-            tricountDao.getTricountWithParticipantsAndExpenses(tricount1fromUser1.id).first()
+            tricountDao.getTricountWithParticipantsAndExpensesFlow(tricount1fromUser1.id).first()
 
         // Then: Tricount matches and lists contain the correct elements
         assertThat(result).isNotNull()
@@ -446,7 +446,7 @@ class TricountDaoTest {
      * 4. Get on non empty Dataset with unrelated Participants/Expenses -> Gets only correct ones
      */
     @Test
-    fun getTricountWithParticipantsAndExpenses_whenOtherTricountsHaveParticipantsOrExpenses_doesNotIncludeThem() =
+    fun getTricountFlowWithParticipantsAndExpenses_whenOtherTricountsHaveParticipantsOrExpenses_doesNotIncludeThem() =
         runTest {
             // Given: Two tricounts, each with their participants and expenses
             userDao.insert(existingUser1)
@@ -467,7 +467,7 @@ class TricountDaoTest {
 
             // When: Get tricount1 with relations
             val result =
-                tricountDao.getTricountWithParticipantsAndExpenses(tricount1fromUser1.id).first()
+                tricountDao.getTricountWithParticipantsAndExpensesFlow(tricount1fromUser1.id).first()
 
             // Then: Only relations for tricount1 are present
             assertThat(result).isNotNull()
@@ -481,14 +481,14 @@ class TricountDaoTest {
      * 5. Get on non empty Dataset without Tricount -> Gets null
      */
     @Test
-    fun getTricountWithParticipantsAndExpenses_whenTricountDoesNotExist() = runTest {
+    fun getTricountWithParticipantsAndExpenses_whenTricountFlowDoesNotExistFlow() = runTest {
         // Given: User and unrelated tricount
         userDao.insert(existingUser1)
         tricountDao.insert(tricount2fromUser1)
 
         // When: Try to get non-existent tricount
         val result =
-            tricountDao.getTricountWithParticipantsAndExpenses(tricount1fromUser1.id).first()
+            tricountDao.getTricountWithParticipantsAndExpensesFlow(tricount1fromUser1.id).first()
 
         // Then: It's null
         assertThat(result).isNull()
@@ -513,7 +513,7 @@ class TricountDaoTest {
         val updateResult = tricountDao.update(tricountToUpdate)
 
         // Then: No rows updated and table is still empty.
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(updateResult).isEqualTo(0)
         assertThat(allTricounts).isEmpty()
@@ -535,7 +535,7 @@ class TricountDaoTest {
         val updateResult = tricountDao.update(updatedTricount)
 
         // Then: Exactly one row updated and tricount is updated in table.
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(updateResult).isEqualTo(1)
         assertThat(allTricounts).hasSize(1)
@@ -557,7 +557,7 @@ class TricountDaoTest {
         val updateResult = tricountDao.update(nonExistingTricount)
 
         // Then: No rows updated and table remains unchanged.
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(updateResult).isEqualTo(0)
         assertThat(allTricounts).hasSize(initialTricounts.size)
@@ -579,7 +579,7 @@ class TricountDaoTest {
         // Given: Empty database.
         val tricountToUpdate = tricount1fromUser1
 
-        val allTricountsFlow = tricountDao.getAll()
+        val allTricountsFlow = tricountDao.getAllFlow()
 
         allTricountsFlow.test {
             val initialEmission = awaitItem()
@@ -607,7 +607,7 @@ class TricountDaoTest {
         userDao.insert(existingUser1)
         tricountDao.insert(tricount1fromUser1)
 
-        val allTricountsFlow = tricountDao.getAll()
+        val allTricountsFlow = tricountDao.getAllFlow()
 
         allTricountsFlow.test {
             val initialEmission = awaitItem()
@@ -638,7 +638,7 @@ class TricountDaoTest {
         userDao.insert(existingUser1)
         initialTricounts.forEach { tricountDao.insert(it) }
 
-        val allTricountsFlow = tricountDao.getAll()
+        val allTricountsFlow = tricountDao.getAllFlow()
 
         allTricountsFlow.test {
             val initialEmission = awaitItem()
@@ -676,7 +676,7 @@ class TricountDaoTest {
         val deleteResult = tricountDao.delete(tricount1fromUser1)
 
         // Then: No tricounts in database and deleteResult is 0
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(0)
         assertThat(allTricounts).isEmpty()
@@ -697,7 +697,7 @@ class TricountDaoTest {
         val deleteResult = tricountDao.delete(tricount1fromUser1)
 
         // Then: Tricount removed and only remaining tricounts present.
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(1)
         assertThat(allTricounts).hasSize(1)
@@ -722,9 +722,9 @@ class TricountDaoTest {
         val deleteResult = tricountDao.delete(tricount1fromUser1)
 
         // Then: Tricount, participants, and expenses are removed
-        val allTricounts = tricountDao.getAll().first()
-        val allParticipants = participantDao.getAll().first()
-        val allExpenses = expenseDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
+        val allParticipants = participantDao.getAllFlow().first()
+        val allExpenses = expenseDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(1)
         assertThat(allTricounts).isEmpty()
@@ -745,7 +745,7 @@ class TricountDaoTest {
         val deleteResult = tricountDao.delete(tricount2fromUser1)
 
         // Then: Database unchanged
-        val allTricounts = tricountDao.getAll().first()
+        val allTricounts = tricountDao.getAllFlow().first()
 
         assertThat(deleteResult).isEqualTo(0)
         assertThat(allTricounts).hasSize(1)

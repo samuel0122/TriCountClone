@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.Currency
 import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
@@ -23,16 +24,18 @@ import com.oliva.samuel.tricountclone.ui.components.CapsuleDropdownMenu
 import com.oliva.samuel.tricountclone.ui.components.CapsuleTextField
 import com.oliva.samuel.tricountclone.ui.components.EmojiSelector
 import com.oliva.samuel.tricountclone.ui.components.participant.AddParticipantsList
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 
 @Composable
 fun TricountForm(
-    tricountModel: TricountModel,
-    userParticipant: ParticipantModel,
-    participants: List<ParticipantModel>,
-    onTricountModelChanged: (TricountModel) -> Unit,
-    onParticipantModelChanged: (ParticipantModel) -> Unit,
+    tricountModel: TricountUiModel,
+    userParticipant: ParticipantUiModel,
+    participants: List<ParticipantUiModel>,
+    onTricountModelChanged: (TricountUiModel) -> Unit,
+    onParticipantModelChanged: (ParticipantUiModel) -> Unit,
     onAddParticipant: () -> Unit,
-    onRemoveParticipant: (ParticipantModel) -> Unit,
+    onRemoveParticipant: (ParticipantUiModel) -> Unit,
     onSubmitClick: () -> Unit
 ) {
     Column(
@@ -113,8 +116,8 @@ fun TricountForm(
 @Composable
 fun TricountFormPreview() {
     TricountForm(
-        tricountModel = TricountModel.default(),
-        userParticipant = ParticipantModel.default(),
+        tricountModel = TricountModel.default().toUiModel(),
+        userParticipant = ParticipantModel.default().toUiModel(),
         participants = emptyList(),
         onTricountModelChanged = {},
         onParticipantModelChanged = {},

@@ -5,15 +5,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
-import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import com.oliva.samuel.tricountclone.ui.components.tricount.TricountForm
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 
 @Composable
 fun AddTricountDialog(
     show: Boolean,
     onDismiss: () -> Unit,
-    onTricountAdded: (TricountModel, List<ParticipantModel>) -> Unit
+    onTricountAdded: (TricountUiModel, List<ParticipantUiModel>) -> Unit
 ) {
     if (show) {
         val viewModel: AddTricountViewModel = hiltViewModel()

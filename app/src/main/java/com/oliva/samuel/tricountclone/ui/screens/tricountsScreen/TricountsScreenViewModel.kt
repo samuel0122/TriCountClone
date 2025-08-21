@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.oliva.samuel.tricountclone.domain.AddParticipantUseCase
 import com.oliva.samuel.tricountclone.domain.AddTricountUseCase
 import com.oliva.samuel.tricountclone.domain.GetLoggedUserUseCase
-import com.oliva.samuel.tricountclone.domain.GetTricountUseCase
-import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
-import com.oliva.samuel.tricountclone.domain.model.TricountModel
+import com.oliva.samuel.tricountclone.domain.GetTricountsUseCase
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 import com.oliva.samuel.tricountclone.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,21 +23,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TricountsScreenViewModel @Inject constructor(
-    private val getTricountUseCase: GetTricountUseCase,
+    private val getTricountsUseCase: GetTricountsUseCase,
     private val getLoggedUserUseCase: GetLoggedUserUseCase,
     private val addTricountUseCase: AddTricountUseCase,
     private val addParticipantUseCase: AddParticipantUseCase
 ) : ViewModel() {
-    private val _tricountsList =
-        MutableStateFlow<Resource<List<TricountModel>>>(Resource.Loading)
-    val tricountsList: StateFlow<Resource<List<TricountModel>>> = _tricountsList
+
+    private val _tricountsList = MutableStateFlow<Resource<List<TricountUiModel>>>(Resource.Loading)
+    val tricountsList: StateFlow<Resource<List<TricountUiModel>>> = _tricountsList
 
     private val _showAddTricountDialog = MutableLiveData<Boolean>()
     val showAddTricountDialog: LiveData<Boolean> = _showAddTricountDialog
 
     init {
         viewModelScope.launch {
-            getTricountUseCase()
+            getTricountsUseCase()
                 .map { Resource.Success(it) }
                 .catch { error ->
                     _tricountsList.value = Resource.Error(error, error.message)
@@ -56,8 +56,8 @@ class TricountsScreenViewModel @Inject constructor(
     }
 
     fun onTricountAdded(
-        tricountModel: TricountModel,
-        tricountParticipants: List<ParticipantModel>
+        tricountModel: TricountUiModel,
+        tricountParticipants: List<ParticipantUiModel>
     ) {
         _showAddTricountDialog.value = false
 
@@ -69,7 +69,7 @@ class TricountsScreenViewModel @Inject constructor(
                 )
 
                 addTricountUseCase(
-                    tricountModel = newTricount
+                    tricountUiModel = newTricount
                 )
 
                 tricountParticipants

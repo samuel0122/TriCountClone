@@ -1,5 +1,6 @@
 package com.oliva.samuel.tricountclone.data
 
+import com.oliva.samuel.tricountclone.core.UserId
 import com.oliva.samuel.tricountclone.data.database.dao.UserDao
 import com.oliva.samuel.tricountclone.data.preferences.dao.LoggedUserDao
 import com.oliva.samuel.tricountclone.domain.mappers.toDatabase
@@ -7,27 +8,28 @@ import com.oliva.samuel.tricountclone.domain.mappers.toDomain
 import com.oliva.samuel.tricountclone.domain.mappers.toPreferences
 import com.oliva.samuel.tricountclone.domain.model.LoggedUserModel
 import com.oliva.samuel.tricountclone.domain.model.UserModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.UUID
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val userDao: UserDao,
     private val loggedUserDao: LoggedUserDao
 ) {
-    fun getUsers() = userDao
-        .getAll()
+    fun getUsers(): Flow<List<UserModel>> = userDao
+        .getAllFlow()
         .map { userEntities ->
             userEntities.map { it.toDomain() }
         }
 
-    fun getUserWithCreatedTricounts(id: UUID) = userDao
-        .getUserWithCreatedTricounts(id)
-        .map {
-            it.toDomain()
+    fun getUserFlow(userId: UserId): Flow<UserModel> = userDao
+        .getUserFlow(userId)
+        .map { userEntity ->
+            userEntity.toDomain()
         }
 
-    suspend fun getUser(id: UUID) = userDao.getUser(id)
+    suspend fun getUser(id: UserId): UserModel? =
+        userDao.getUser(id)?.toDomain()
 
     suspend fun setLoggedUser(user: LoggedUserModel) {
         loggedUserDao.setLoggedUserId(user.toPreferences())

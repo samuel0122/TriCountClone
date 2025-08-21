@@ -5,9 +5,10 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.oliva.samuel.tricountclone.core.TricountId
+import com.oliva.samuel.tricountclone.core.UserId
 import com.oliva.samuel.tricountclone.data.database.contracts.TricountContract
 import java.util.Date
-import java.util.UUID
 
 @Entity(
     tableName = TricountContract.TABLE_TRICOUNT,
@@ -24,7 +25,7 @@ import java.util.UUID
 data class TricountEntity(
     @PrimaryKey
     @ColumnInfo(name = TricountContract.TABLE_TRICOUNT_COLUMN_ID)
-    val id: UUID = UUID.randomUUID(),
+    val id: TricountId = TricountId.randomUUID(),
 
     @ColumnInfo(name = TricountContract.TABLE_TRICOUNT_COLUMN_TITLE)
     val title: String,
@@ -36,7 +37,7 @@ data class TricountEntity(
     val currency: String,
 
     @ColumnInfo(name = TricountContract.TABLE_TRICOUNT_COLUMN_CREATED_BY)
-    val createdBy: UUID,
+    val createdBy: UserId,
 
     @ColumnInfo(name = TricountContract.TABLE_TRICOUNT_COLUMN_CREATED_AT)
     val createdAt: Date

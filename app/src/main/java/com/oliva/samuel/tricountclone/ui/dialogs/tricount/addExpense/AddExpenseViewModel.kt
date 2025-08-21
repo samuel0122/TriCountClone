@@ -5,43 +5,47 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.oliva.samuel.tricountclone.domain.GetTricountWithParticipantsAndExpensesUseCase
+import com.oliva.samuel.tricountclone.core.TricountId
+import com.oliva.samuel.tricountclone.domain.GetTricountDetailsUseCase
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
-import com.oliva.samuel.tricountclone.domain.model.ExpenseShareModel
-import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
+import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
+import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 import com.oliva.samuel.tricountclone.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
-    private val getTricountWithParticipantsAndExpensesUseCase: GetTricountWithParticipantsAndExpensesUseCase
+    private val getTricountDetailsUseCase: GetTricountDetailsUseCase
 ) : ViewModel() {
-    private val _expenseModel = mutableStateOf(ExpenseModel.default())
-    val expenseModel: State<ExpenseModel>
+
+    private val _expenseModel = mutableStateOf(ExpenseModel.default().toUiModel())
+    val expenseModel: State<ExpenseUiModel>
         get() = _expenseModel
 
-    private val _expenseSharesList = mutableStateListOf<ExpenseShareModel>()
-    val expenseSharesList: List<ExpenseShareModel>
+    private val _expenseSharesList = mutableStateListOf<ExpenseShareUiModel>()
+    val expenseSharesList: List<ExpenseShareUiModel>
         get() = _expenseSharesList
 
-    private val _tricountInfo = mutableStateOf(TricountModel.default())
-    val tricountInfo: State<TricountModel>
+    private val _tricountInfo = mutableStateOf(TricountModel.default().toUiModel())
+    val tricountInfo: State<TricountUiModel>
         get() = _tricountInfo
 
-    private val _participantsList = mutableStateListOf<ParticipantModel>()
-    val participantsList: List<ParticipantModel>
+    private val _participantsList = mutableStateListOf<ParticipantUiModel>()
+    val participantsList: List<ParticipantUiModel>
         get() = _participantsList
 
 
-    fun loadTricount(tricountId: UUID) {
+    fun loadTricount(tricountId: TricountId) {
         viewModelScope.launch {
-            getTricountWithParticipantsAndExpensesUseCase(tricountId)
+            getTricountDetailsUseCase(tricountId)
                 .map { Resource.Success(it) }
                 .catch {}
                 .collect { result ->
@@ -56,16 +60,16 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun onExpenseModelChanged(expenseModel: ExpenseModel) {
-        _expenseModel.value = expenseModel
+    fun onExpenseModelChanged(expense: ExpenseUiModel) {
+        _expenseModel.value = expense
 
         updateExpenseShares()
     }
 
-    fun onAddParticipantExpenseShare(participantModel: ParticipantModel) {
+    fun onAddParticipantExpenseShare(participant: ParticipantUiModel) {
         _expenseSharesList.add(
-            ExpenseShareModel(
-                participantId = participantModel.id,
+            ExpenseShareUiModel(
+                participantId = participant.id,
                 expenseId = expenseModel.value.id,
                 amountOwed = 0.0
             )
@@ -74,8 +78,8 @@ class AddExpenseViewModel @Inject constructor(
         updateExpenseShares()
     }
 
-    fun onRemoveParticipantExpenseShare(participantModel: ParticipantModel) {
-        _expenseSharesList.removeIf { it.participantId == participantModel.id }
+    fun onRemoveParticipantExpenseShare(participant: ParticipantUiModel) {
+        _expenseSharesList.removeIf { it.participantId == participant.id }
 
         updateExpenseShares()
     }
@@ -90,7 +94,7 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     fun onSubmitClick(
-        onSubmitted: (ExpenseModel, List<ExpenseShareModel>) -> Unit
+        onSubmitted: (ExpenseUiModel, List<ExpenseShareUiModel>) -> Unit
     ) {
         onSubmitted(expenseModel.value, expenseSharesList)
     }

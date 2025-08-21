@@ -18,17 +18,21 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    navController: NavController,
-    mainScreenViewModel: MainScreenViewModel
+    mainScreenViewModel: MainScreenViewModel,
+    navigateToTricountsScreen: () -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        navigateToTricountsScreen()
+    }
+
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
@@ -42,9 +46,11 @@ fun MainScreen(
             TooltipBox(
                 positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider((-2).dp),
                 tooltip = {
-                    PlainTooltip(modifier = Modifier
-                        .sizeIn(45.dp, 25.dp)
-                        .wrapContentWidth()) {
+                    PlainTooltip(
+                        modifier = Modifier
+                            .sizeIn(45.dp, 25.dp)
+                            .wrapContentWidth()
+                    ) {
                         Text(
                             text = "Haz clic para enviar",
                             style = MaterialTheme.typography.bodySmall

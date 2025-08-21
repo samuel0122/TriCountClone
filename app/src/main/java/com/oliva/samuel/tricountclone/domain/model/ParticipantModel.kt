@@ -1,21 +1,23 @@
 package com.oliva.samuel.tricountclone.domain.model
 
+import com.oliva.samuel.tricountclone.core.ParticipantId
+import com.oliva.samuel.tricountclone.core.TricountId
+import com.oliva.samuel.tricountclone.core.UserId
 import java.time.Instant
 import java.util.Date
-import java.util.UUID
 
 data class ParticipantModel(
-    val id: UUID,
+    val id: ParticipantId,
     val name: String,
     val joinedAt: Date,
-    val userId: UUID?,
-    val tricountId: UUID
+    val userId: UserId?,
+    val tricountId: TricountId
 ) {
     companion object {
         fun default(
-            tricountId: UUID = UUID.randomUUID()
+            tricountId: TricountId = TricountId.randomUUID()
         ): ParticipantModel = ParticipantModel(
-            id = UUID.randomUUID(),
+            id = ParticipantId.randomUUID(),
             name = "",
             joinedAt = Date.from(Instant.now()),
             userId = null,

@@ -18,11 +18,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
-import com.oliva.samuel.tricountclone.domain.model.TricountWithParticipantsAndExpensesModel
 import com.oliva.samuel.tricountclone.ui.components.expense.ExpensesList
 import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addExpense.AddExpenseDialog
+import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 import com.oliva.samuel.tricountclone.utils.Resource
 
 @Composable
@@ -45,7 +47,9 @@ fun TricountDetailScreen(
 
         is Resource.Success -> {
             TricountDetailScreenScaffold(
-                tricountWithParticipantsAndExpensesModel = tricountsInfo.data,
+                tricount = tricountsInfo.data.tricount,
+                participants = tricountsInfo.data.participants,
+                expenses = tricountsInfo.data.expenses,
                 onAddExpense = tricountDetailViewModel::onShowAddExpenseDialogClick,
                 onExpenseSelected = { }
             )
@@ -62,9 +66,11 @@ fun TricountDetailScreen(
 
 @Composable
 fun TricountDetailScreenScaffold(
-    tricountWithParticipantsAndExpensesModel: TricountWithParticipantsAndExpensesModel,
+    tricount: TricountUiModel,
+    participants: List<ParticipantUiModel>,
+    expenses: List<ExpenseUiModel>,
     onAddExpense: () -> Unit,
-    onExpenseSelected: (ExpenseModel) -> Unit
+    onExpenseSelected: (ExpenseUiModel) -> Unit
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -82,17 +88,17 @@ fun TricountDetailScreenScaffold(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = tricountWithParticipantsAndExpensesModel.tricount.title,
+                text = tricount.title,
                 modifier = Modifier.padding(innerPadding)
             )
 
             Text(
-                text = tricountWithParticipantsAndExpensesModel.tricount.icon,
+                text = tricount.icon,
                 modifier = Modifier.padding(innerPadding)
             )
 
             ExpensesList(
-                expensesList = tricountWithParticipantsAndExpensesModel.expenses,
+                expensesList = expenses,
                 onExpenseSelected = onExpenseSelected
             )
         }
@@ -103,14 +109,12 @@ fun TricountDetailScreenScaffold(
 @Composable
 fun TricountDetailScrenPreview() {
     TricountDetailScreenScaffold(
-        tricountWithParticipantsAndExpensesModel = TricountWithParticipantsAndExpensesModel(
-            tricount = TricountModel.default().copy(
-                title = "Tricount Example",
-                icon = "🏠"
-            ),
-            participants = emptyList(),
-            expenses = emptyList()
-        ),
+        tricount = TricountModel.default().copy(
+            title = "Tricount Example",
+            icon = "🏠"
+        ).toUiModel(),
+        participants = emptyList(),
+        expenses = emptyList(),
         onAddExpense = {},
         onExpenseSelected = {}
     )

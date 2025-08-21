@@ -5,18 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
-import com.oliva.samuel.tricountclone.domain.model.ExpenseShareModel
+import com.oliva.samuel.tricountclone.core.TricountId
 import com.oliva.samuel.tricountclone.ui.components.expense.ExpenseForm
-import java.util.UUID
+import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
+import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
 
 
 @Composable
 fun AddExpenseDialog(
     show: Boolean,
-    tricountId: UUID,
+    tricountId: TricountId,
     onDismiss: () -> Unit,
-    onExpenseAdded: (ExpenseModel,List<ExpenseShareModel>) -> Unit
+    onExpenseAdded: (ExpenseUiModel, List<ExpenseShareUiModel>) -> Unit
 ) {
     if (show) {
         val viewModel: AddExpenseViewModel = hiltViewModel()

@@ -1,26 +1,31 @@
 package com.oliva.samuel.tricountclone.domain.model
 
+import com.oliva.samuel.tricountclone.core.ExpenseId
+import com.oliva.samuel.tricountclone.core.ParticipantId
+import com.oliva.samuel.tricountclone.core.TricountId
 import java.time.Instant
 import java.util.Date
-import java.util.UUID
 
 data class ExpenseModel(
-    val id: UUID,
+    val id: ExpenseId,
     val title: String,
     val amount: Double,
-    val paidBy: UUID,
+    val paidBy: ParticipantId,
     val createdAt: Date,
-    val tricountId: UUID,
+    val tricountId: TricountId,
     val note: String?
 ) {
     companion object {
-        fun default(): ExpenseModel = ExpenseModel(
-            id = UUID.randomUUID(),
+        fun default(
+            paidBy: ParticipantId = ParticipantId.randomUUID(),
+            tricountId: TricountId = TricountId.randomUUID()
+        ): ExpenseModel = ExpenseModel(
+            id = ExpenseId.randomUUID(),
             title = "Default Expense",
             amount = 2.21,
-            paidBy = UUID.randomUUID(),
+            paidBy = paidBy,
             createdAt = Date.from(Instant.now()),
-            tricountId = UUID.randomUUID(),
+            tricountId = tricountId,
             note = null
         )
     }

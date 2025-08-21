@@ -1,7 +1,7 @@
 package com.oliva.samuel.tricountclone.data.preferences.entities
 
-import java.util.UUID
+import com.oliva.samuel.tricountclone.core.UserId
 
 data class LoggedUserPreference(
-    val loggedUserId: UUID?
+    val loggedUserId: UserId?
 )

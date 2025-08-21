@@ -21,17 +21,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.oliva.samuel.tricountclone.core.TricountId
+import com.oliva.samuel.tricountclone.core.UserId
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.Currency
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 import java.time.Instant
 import java.util.Date
-import java.util.UUID
 
 @Composable
 fun TricountItem(
     modifier: Modifier = Modifier,
-    tricountModel: TricountModel,
-    onTricountSelected: (TricountModel) -> Unit
+    tricountModel: TricountUiModel,
+    onTricountSelected: (TricountUiModel) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -80,15 +83,15 @@ fun TricountItemPreview() {
         TricountItem(
             modifier = Modifier.padding(it),
             tricountModel = TricountModel(
-                id = UUID.randomUUID(),
+                id = TricountId.randomUUID(),
                 title = "Moros y Rafidash",
                 icon = "🎡",
                 currency = Currency.Euro,
-                createdBy = UUID.randomUUID(),
+                createdBy = UserId.randomUUID(),
                 createdAt = Date.from(Instant.now())
-            )
+            ).toUiModel()
         ) {
-            Log.d("TricountItem", "TricountItem: $it")
+            Log.d("TricountUiModel", "TricountUiModel: $it")
         }
     }
 }

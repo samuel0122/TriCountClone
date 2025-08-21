@@ -7,13 +7,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.oliva.samuel.tricountclone.domain.model.TricountModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 
 @Composable
 fun TricountsList(
     modifier: Modifier = Modifier,
-    tricountsList: List<TricountModel>,
-    onTricountSelected: (TricountModel) -> Unit
+    tricountsList: List<TricountUiModel>,
+    onTricountSelected: (TricountUiModel) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,

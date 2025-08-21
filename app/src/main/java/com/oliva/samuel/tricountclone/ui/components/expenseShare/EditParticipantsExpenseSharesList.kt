@@ -11,17 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.oliva.samuel.tricountclone.domain.model.Currency
-import com.oliva.samuel.tricountclone.domain.model.ExpenseShareModel
-import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
+import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 
 @Composable
 fun EditParticipantsExpenseSharesList(
     modifier: Modifier = Modifier,
-    participants: List<ParticipantModel>,
-    expenseSharesList: List<ExpenseShareModel>,
+    participants: List<ParticipantUiModel>,
+    expenseSharesList: List<ExpenseShareUiModel>,
     expenseCurrency: Currency,
-    onAddParticipantExpenseShare: (ParticipantModel) -> Unit,
-    onRemoveParticipantExpenseShare: (ParticipantModel) -> Unit
+    onAddParticipantExpenseShare: (ParticipantUiModel) -> Unit,
+    onRemoveParticipantExpenseShare: (ParticipantUiModel) -> Unit
 ) {
     Card(
         modifier = modifier

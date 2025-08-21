@@ -7,13 +7,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
+import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
 
 @Composable
 fun ExpensesList(
     modifier: Modifier = Modifier,
-    expensesList: List<ExpenseModel>,
-    onExpenseSelected: (ExpenseModel) -> Unit
+    expensesList: List<ExpenseUiModel>,
+    onExpenseSelected: (ExpenseUiModel) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,

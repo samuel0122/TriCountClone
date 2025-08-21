@@ -6,8 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oliva.samuel.tricountclone.domain.GetLoggedUserUseCase
+import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
+import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
+import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,16 +19,17 @@ import javax.inject.Inject
 class AddTricountViewModel @Inject constructor(
     private val getLoggedUserUseCase: GetLoggedUserUseCase
 ) : ViewModel() {
-    private val _tricountModel = mutableStateOf(TricountModel.default())
-    val tricountModel: State<TricountModel>
+
+    private val _tricountModel = mutableStateOf(TricountModel.default().toUiModel())
+    val tricountModel: State<TricountUiModel>
         get() = _tricountModel
 
-    private val _userParticipant = mutableStateOf(ParticipantModel.default())
-    val userParticipant: State<ParticipantModel>
+    private val _userParticipant = mutableStateOf(ParticipantModel.default().toUiModel())
+    val userParticipant: State<ParticipantUiModel>
         get() = _userParticipant
 
-    private val _participantsList = mutableStateListOf<ParticipantModel>()
-    val participantsList: List<ParticipantModel>
+    private val _participantsList = mutableStateListOf<ParticipantUiModel>()
+    val participantsList: List<ParticipantUiModel>
         get() = _participantsList
 
     init {
@@ -38,21 +42,21 @@ class AddTricountViewModel @Inject constructor(
                         userId = loggerUser.id
                     )
 
-                _userParticipant.value = loggedUserParticipant
+                _userParticipant.value = loggedUserParticipant.toUiModel()
             }
         }
     }
 
-    fun onTricountModelChanged(tricountModel: TricountModel) {
-        _tricountModel.value = tricountModel
+    fun onTricountModelChanged(tricount: TricountUiModel) {
+        _tricountModel.value = tricount
     }
 
-    fun onParticipantModelChanged(participantModel: ParticipantModel) {
-        participantsList.find { it.id == participantModel.id }?.let {
-            _participantsList[participantsList.indexOf(it)] = participantModel
+    fun onParticipantModelChanged(participant: ParticipantUiModel) {
+        participantsList.find { it.id == participant.id }?.let {
+            _participantsList[participantsList.indexOf(it)] = participant
         } ?: run {
-            if (userParticipant.value.id == participantModel.id) {
-                _userParticipant.value = participantModel
+            if (userParticipant.value.id == participant.id) {
+                _userParticipant.value = participant
             }
         }
     }
@@ -60,15 +64,15 @@ class AddTricountViewModel @Inject constructor(
     fun onAddParticipant() {
         if (participantsList.any { it.name.isEmpty() }) return
 
-        _participantsList.add(ParticipantModel.default(tricountModel.value.id))
+        _participantsList.add(ParticipantModel.default(tricountModel.value.id).toUiModel())
     }
 
-    fun onRemoveParticipant(participantModel: ParticipantModel) {
-        _participantsList.removeIf { it.id == participantModel.id }
+    fun onRemoveParticipant(participant: ParticipantUiModel) {
+        _participantsList.removeIf { it.id == participant.id }
     }
 
     fun onSubmit(
-        onSubmitted: (TricountModel, List<ParticipantModel>) -> Unit
+        onSubmitted: (TricountUiModel, List<ParticipantUiModel>) -> Unit
     ) {
         viewModelScope.launch {
             val tricountParticipants = participantsList

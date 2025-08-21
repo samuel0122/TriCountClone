@@ -1,8 +1,8 @@
 package com.oliva.samuel.tricountclone.domain.model
 
-import java.util.UUID
+import com.oliva.samuel.tricountclone.core.UserId
 
 data class UserModel(
-    val id: UUID,
+    val id: UserId,
     val name: String
 )

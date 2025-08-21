@@ -1,16 +1,20 @@
 package com.oliva.samuel.tricountclone.domain.model
 
-import java.util.UUID
+import com.oliva.samuel.tricountclone.core.ExpenseId
+import com.oliva.samuel.tricountclone.core.ParticipantId
 
 data class ExpenseShareModel(
-    val expenseId: UUID,
-    val participantId: UUID,
+    val expenseId: ExpenseId,
+    val participantId: ParticipantId,
     val amountOwed: Double
 ) {
     companion object {
-        fun default(): ExpenseShareModel = ExpenseShareModel(
-            expenseId = UUID.randomUUID(),
-            participantId = UUID.randomUUID(),
+        fun default(
+            expenseId: ExpenseId = ExpenseId.randomUUID(),
+            participantId: ParticipantId = ParticipantId.randomUUID()
+        ): ExpenseShareModel = ExpenseShareModel(
+            expenseId = expenseId,
+            participantId = participantId,
             amountOwed = 0.0
         )
     }

@@ -7,14 +7,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.oliva.samuel.tricountclone.ui.screens.SplashScreen
+import com.oliva.samuel.tricountclone.core.UserId
 import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreen
 import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreenViewModel
+import com.oliva.samuel.tricountclone.ui.screens.splashScreen.SplashScreen
+import com.oliva.samuel.tricountclone.ui.screens.splashScreen.SplashViewModel
 import com.oliva.samuel.tricountclone.ui.screens.tricountDetailScreen.TricountDetailScreen
 import com.oliva.samuel.tricountclone.ui.screens.tricountDetailScreen.TricountDetailViewModel
 import com.oliva.samuel.tricountclone.ui.screens.tricountsScreen.TricountsScreen
 import com.oliva.samuel.tricountclone.ui.screens.tricountsScreen.TricountsScreenViewModel
-import java.util.UUID
 
 @Composable
 fun TriCountCloneNavigation() {
@@ -25,17 +26,29 @@ fun TriCountCloneNavigation() {
         startDestination = TricountCloneDestinations.SplashScreen
     ) {
         composable<TricountCloneDestinations.SplashScreen> {
-            SplashScreen {
-                navigationController.navigate(TricountCloneDestinations.TricountsScreen)
-            }
+            val splashViewModel = hiltViewModel<SplashViewModel>()
+
+            SplashScreen(
+                splashViewModel = splashViewModel,
+                navigateToTricounts = {
+                    navigationController.navigate(TricountCloneDestinations.TricountsScreen) {
+                        popUpTo(TricountCloneDestinations.SplashScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
 
         composable<TricountCloneDestinations.MainScreen> {
             val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
 
             MainScreen(
-                navController = navigationController,
-                mainScreenViewModel = mainScreenViewModel
+                mainScreenViewModel = mainScreenViewModel,
+                navigateToTricountsScreen = {
+                    navigationController.navigate(TricountCloneDestinations.TricountsScreen)
+                }
             )
         }
 
@@ -57,7 +70,7 @@ fun TriCountCloneNavigation() {
         composable<TricountCloneDestinations.TricountDetailScreen> { backStackEntry ->
             val tricoundDetails =
                 backStackEntry.toRoute<TricountCloneDestinations.TricountDetailScreen>()
-            val tricountId = UUID.fromString(tricoundDetails.tricountId)
+            val tricountId = UserId.fromString(tricoundDetails.tricountId)
 
             val tricountDetailViewModel = hiltViewModel<TricountDetailViewModel>()
 
