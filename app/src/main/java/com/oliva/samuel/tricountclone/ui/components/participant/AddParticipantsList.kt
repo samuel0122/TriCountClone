@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.ParticipantModel
 import com.oliva.samuel.tricountclone.ui.components.BorderlessTextField
+import com.oliva.samuel.tricountclone.ui.components.UiItemCard
 import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 
 @Composable
@@ -37,7 +38,7 @@ fun AddParticipantsList(
     onAddParticipant: () -> Unit,
     onRemoveParticipant: (ParticipantUiModel) -> Unit
 ) {
-    Card(
+    UiItemCard(
         modifier = modifier
     ) {
         LazyColumn(

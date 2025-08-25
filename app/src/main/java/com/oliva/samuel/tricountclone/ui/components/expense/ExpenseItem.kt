@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,24 +13,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
-import com.oliva.samuel.tricountclone.domain.model.ExpenseModel
-import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
+import com.oliva.samuel.tricountclone.ui.components.UiItemCard
 
 @Composable
 fun ExpenseItem(
     modifier: Modifier = Modifier,
-    expenseModel: ExpenseUiModel,
-    onExpenseSelected: (ExpenseUiModel) -> Unit
+    expenseTitle: String,
+    expenseAmount: Double,
+    participantName: String,
+    onItemClick: (() -> Unit)? = null
 ) {
-    Card(
+    UiItemCard(
         modifier = modifier
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { onExpenseSelected(expenseModel) },
+                .then(
+                    onItemClick?.let {
+                        Modifier.clickable { onItemClick() }
+                    } ?: Modifier
+                )
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -40,11 +43,11 @@ fun ExpenseItem(
 
             Column {
                 Text(
-                    text = expenseModel.title
+                    text = expenseTitle
                 )
 
                 Text(
-                    text = "Paid by: ${expenseModel.paidBy}",
+                    text = "Paid by: $participantName",
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -54,7 +57,7 @@ fun ExpenseItem(
             )
 
             Text(
-                text = expenseModel.amount.toString()
+                text = expenseAmount.toString()
             )
         }
     }
@@ -64,7 +67,8 @@ fun ExpenseItem(
 @Composable
 fun ExpenseItemPreview() {
     ExpenseItem(
-        expenseModel = ExpenseModel.default().toUiModel(),
-        onExpenseSelected = {}
+        expenseTitle = "Expense",
+        expenseAmount = 2.21,
+        participantName = "Participant"
     )
 }

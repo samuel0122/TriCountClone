@@ -35,7 +35,7 @@ fun CapsuleDropdownMenu(
     onItemClick: (String) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
-    Column(
+    UiItemCard(
         modifier = modifier
     ) {
         Card(

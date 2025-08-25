@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.oliva.samuel.tricountclone.core.TricountId
 import com.oliva.samuel.tricountclone.ui.components.tricount.TricountsList
 import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addTricount.AddTricountDialog
@@ -62,7 +63,9 @@ fun TricountsScreenScaffold(
     onTricountSelected: (TricountUiModel) -> Unit
 ) {
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddTricount

@@ -14,14 +14,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ParticipantDao {
-    @Query("SELECT * FROM ${TricountContract.TABLE_PARTICIPANT}")
-    fun getAllFlow(): Flow<List<ParticipantEntity>>
-
     @Query(
         "SELECT * FROM ${TricountContract.TABLE_PARTICIPANT}" +
                 " WHERE ${TricountContract.TABLE_PARTICIPANT_COLUMN_ID} = :participantId"
     )
     fun getParticipantFlow(participantId: ParticipantId): Flow<ParticipantEntity>
+
+    @Query(
+        "SELECT * FROM ${TricountContract.TABLE_PARTICIPANT}" +
+                " WHERE ${TricountContract.TABLE_PARTICIPANT_COLUMN_ID} IN (:ids)"
+    )
+    fun getParticipantsFlow(ids: List<ParticipantId>): Flow<List<ParticipantEntity>>
 
     @Query(
         "SELECT * FROM ${TricountContract.TABLE_PARTICIPANT}" +

@@ -1,5 +1,6 @@
 package com.oliva.samuel.tricountclone.ui.screens.tricountDetailScreen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.oliva.samuel.tricountclone.core.ExpenseId
+import com.oliva.samuel.tricountclone.core.ParticipantId
 import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import com.oliva.samuel.tricountclone.ui.components.expense.ExpensesList
@@ -29,7 +34,8 @@ import com.oliva.samuel.tricountclone.utils.Resource
 
 @Composable
 fun TricountDetailScreen(
-    tricountDetailViewModel: TricountDetailViewModel
+    tricountDetailViewModel: TricountDetailViewModel,
+    navigateToExpenseDetail: (ExpenseId) -> Unit
 ) {
     val uiState by tricountDetailViewModel.tricount.collectAsState()
     val showAddExpenseDialog by tricountDetailViewModel.showAddExpenseDialog.observeAsState(false)
@@ -51,7 +57,7 @@ fun TricountDetailScreen(
                 participants = tricountsInfo.data.participants,
                 expenses = tricountsInfo.data.expenses,
                 onAddExpense = tricountDetailViewModel::onShowAddExpenseDialogClick,
-                onExpenseSelected = { }
+                onExpenseSelected = { navigateToExpenseDetail(it.id) }
             )
 
             AddExpenseDialog(
@@ -67,13 +73,15 @@ fun TricountDetailScreen(
 @Composable
 fun TricountDetailScreenScaffold(
     tricount: TricountUiModel,
-    participants: List<ParticipantUiModel>,
+    participants: Map<ParticipantId, ParticipantUiModel>,
     expenses: List<ExpenseUiModel>,
     onAddExpense: () -> Unit,
     onExpenseSelected: (ExpenseUiModel) -> Unit
 ) {
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddExpense
@@ -85,20 +93,21 @@ fun TricountDetailScreenScaffold(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
             Text(
-                text = tricount.title,
-                modifier = Modifier.padding(innerPadding)
+                text = tricount.icon,
+                fontSize = 30.sp
             )
 
             Text(
-                text = tricount.icon,
-                modifier = Modifier.padding(innerPadding)
+                text = tricount.title
             )
 
             ExpensesList(
                 expensesList = expenses,
+                participants = participants,
                 onExpenseSelected = onExpenseSelected
             )
         }
@@ -113,7 +122,7 @@ fun TricountDetailScrenPreview() {
             title = "Tricount Example",
             icon = "🏠"
         ).toUiModel(),
-        participants = emptyList(),
+        participants = emptyMap(),
         expenses = emptyList(),
         onAddExpense = {},
         onExpenseSelected = {}

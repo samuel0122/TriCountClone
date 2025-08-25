@@ -7,7 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.oliva.samuel.tricountclone.core.UserId
+import com.oliva.samuel.tricountclone.ui.screens.expenseDetailScreen.ExpenseDetailScreen
+import com.oliva.samuel.tricountclone.ui.screens.expenseDetailScreen.ExpenseDetailViewModel
 import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreen
 import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreenViewModel
 import com.oliva.samuel.tricountclone.ui.screens.splashScreen.SplashScreen
@@ -59,9 +60,7 @@ fun TriCountCloneNavigation() {
                 tricountsScreenViewModel = tricountsScreenViewModel,
                 navigateToTricountDetail = { tricountId ->
                     navigationController.navigate(
-                        TricountCloneDestinations.TricountDetailScreen(
-                            tricountId.toString()
-                        )
+                        TricountCloneDestinations.TricountDetailScreen(tricountId)
                     )
                 }
             )
@@ -70,7 +69,7 @@ fun TriCountCloneNavigation() {
         composable<TricountCloneDestinations.TricountDetailScreen> { backStackEntry ->
             val tricoundDetails =
                 backStackEntry.toRoute<TricountCloneDestinations.TricountDetailScreen>()
-            val tricountId = UserId.fromString(tricoundDetails.tricountId)
+            val tricountId = tricoundDetails.tricountId
 
             val tricountDetailViewModel = hiltViewModel<TricountDetailViewModel>()
 
@@ -79,7 +78,28 @@ fun TriCountCloneNavigation() {
             }
 
             TricountDetailScreen(
-                tricountDetailViewModel = tricountDetailViewModel
+                tricountDetailViewModel = tricountDetailViewModel,
+                navigateToExpenseDetail = { expenseId ->
+                    navigationController.navigate(
+                        TricountCloneDestinations.ExpenseDetailScreen(expenseId)
+                    )
+                }
+            )
+        }
+
+        composable<TricountCloneDestinations.ExpenseDetailScreen> { backStackEntry ->
+            val expenseDetail =
+                backStackEntry.toRoute<TricountCloneDestinations.ExpenseDetailScreen>()
+            val expenseId = expenseDetail.expenseId
+
+            val expenseDetailViewModel = hiltViewModel<ExpenseDetailViewModel>()
+
+            LaunchedEffect(key1 = expenseId) {
+                expenseDetailViewModel.loadExpense(expenseId)
+            }
+
+            ExpenseDetailScreen(
+                expenseDetailViewModel = expenseDetailViewModel
             )
         }
     }

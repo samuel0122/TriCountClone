@@ -13,17 +13,18 @@ import javax.inject.Inject
 class ParticipantRepository @Inject constructor(
     private val participantDao: ParticipantDao
 ) {
-    fun getParticipants(): Flow<List<ParticipantModel>> = participantDao
-        .getAllFlow()
-        .map { participantEntities ->
-            participantEntities.map { it.toDomain() }
-        }
-
     fun getParticipant(participantId: ParticipantId): Flow<ParticipantModel> = participantDao
         .getParticipantFlow(participantId)
         .map { participantEntity ->
             participantEntity.toDomain()
         }
+
+    fun getParticipants(participantIds: List<ParticipantId>): Flow<List<ParticipantModel>> =
+        participantDao
+            .getParticipantsFlow(participantIds)
+            .map { participantsEntities ->
+                participantsEntities.map { it.toDomain() }
+            }
 
     fun getParticipantsFromTricount(tricountId: TricountId): Flow<List<ParticipantModel>> =
         participantDao

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oliva.samuel.tricountclone.core.ExpenseId
 import com.oliva.samuel.tricountclone.core.TricountId
+import com.oliva.samuel.tricountclone.domain.AddExpenseShareUseCase
 import com.oliva.samuel.tricountclone.domain.AddExpenseUseCase
 import com.oliva.samuel.tricountclone.domain.GetTricountDetailsUseCase
 import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
@@ -25,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TricountDetailViewModel @Inject constructor(
     private val getTricountDetailsUseCase: GetTricountDetailsUseCase,
-    private val addExpenseUseCase: AddExpenseUseCase
+    private val addExpenseUseCase: AddExpenseUseCase,
+    private val addExpenseShareUseCase: AddExpenseShareUseCase
 ) : ViewModel() {
 
     private val _tricount = MutableStateFlow<Resource<TricountDetailUiModel>>(Resource.Loading)
@@ -66,13 +68,21 @@ class TricountDetailViewModel @Inject constructor(
 
         _tricountId?.let { tricountId ->
             viewModelScope.launch {
-                addExpenseUseCase(
-                    expenseModel.copy(
-                        id = ExpenseId.randomUUID(),
-                        createdAt = Date.from(Instant.now()),
-                        tricountId = tricountId
-                    )
+                val addingExpenseModel = expenseModel.copy(
+                    id = ExpenseId.randomUUID(),
+                    createdAt = Date.from(Instant.now()),
+                    tricountId = tricountId
                 )
+
+                addExpenseUseCase(addingExpenseModel)
+
+                expenseShares.forEach {
+                    addExpenseShareUseCase(
+                        it.copy(
+                            expenseId = addingExpenseModel.id
+                        )
+                    )
+                }
             }
         }
     }

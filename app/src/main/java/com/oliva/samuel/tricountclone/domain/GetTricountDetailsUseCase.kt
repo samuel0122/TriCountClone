@@ -36,7 +36,7 @@ class GetTricountDetailsUseCase @Inject constructor(
                 TricountDetailUiModel(
                     tricount = tricount.toUiModel(),
                     createdBy = user.toUiModel(),
-                    participants = participants.map { it.toUiModel() },
+                    participants = participants.map { it.toUiModel() }.associateBy { it.id },
                     expenses = expenses.map { it.toUiModel() }
                 )
             }

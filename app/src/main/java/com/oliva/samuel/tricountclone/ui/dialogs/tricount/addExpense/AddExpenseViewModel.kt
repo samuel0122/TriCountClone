@@ -51,7 +51,7 @@ class AddExpenseViewModel @Inject constructor(
                 .collect { result ->
                     _tricountInfo.value = result.data.tricount
                     _participantsList.clear()
-                    _participantsList.addAll(result.data.participants)
+                    _participantsList.addAll(result.data.participants.values)
                     if (_participantsList.none { it.id == _expenseModel.value.paidBy }) {
                         _expenseModel.value =
                             _expenseModel.value.copy(paidBy = participantsList.first().id)
