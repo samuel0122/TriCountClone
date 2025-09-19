@@ -21,8 +21,8 @@ import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.Currency
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import com.oliva.samuel.tricountclone.ui.components.UiItemCard
-import com.oliva.samuel.tricountclone.ui.components.expenseShare.ExpenseShareItem
-import com.oliva.samuel.tricountclone.ui.components.expenseShare.ExpenseSharesList
+import com.oliva.samuel.tricountclone.ui.widgets.expenseShare.ExpenseShareItem
+import com.oliva.samuel.tricountclone.ui.widgets.expenseShare.ExpenseSharesList
 import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
 import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
 import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel

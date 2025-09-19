@@ -25,11 +25,11 @@ import com.oliva.samuel.tricountclone.core.ExpenseId
 import com.oliva.samuel.tricountclone.core.ParticipantId
 import com.oliva.samuel.tricountclone.domain.mappers.toUiModel
 import com.oliva.samuel.tricountclone.domain.model.TricountModel
-import com.oliva.samuel.tricountclone.ui.components.expense.ExpensesList
 import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addExpense.AddExpenseDialog
 import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
 import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
+import com.oliva.samuel.tricountclone.ui.widgets.expense.ExpensesList
 import com.oliva.samuel.tricountclone.utils.Resource
 
 @Composable
@@ -105,11 +105,24 @@ fun TricountDetailScreenScaffold(
                 text = tricount.title
             )
 
-            ExpensesList(
-                expensesList = expenses,
-                participants = participants,
-                onExpenseSelected = onExpenseSelected
-            )
+            if (expenses.isNotEmpty()) {
+                ExpensesList(
+                    expensesList = expenses,
+                    participants = participants,
+                    onExpenseSelected = onExpenseSelected
+                )
+            } else {
+
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Nothing here for now. Tap + to add an expense!"
+                    )
+                }
+            }
         }
     }
 }

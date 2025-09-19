@@ -6,7 +6,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.oliva.samuel.tricountclone.core.TricountId
-import com.oliva.samuel.tricountclone.ui.components.expense.ExpenseForm
+import com.oliva.samuel.tricountclone.ui.widgets.expense.ExpenseForm
 import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
 import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
 

@@ -1,4 +1,4 @@
-package com.oliva.samuel.tricountclone.ui.components.expense
+package com.oliva.samuel.tricountclone.ui.widgets.expense
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +24,7 @@ import com.oliva.samuel.tricountclone.ui.components.CapsuleDropdownMenu
 import com.oliva.samuel.tricountclone.ui.components.CapsuleTextField
 import com.oliva.samuel.tricountclone.ui.components.CurrencyTextField
 import com.oliva.samuel.tricountclone.ui.components.CurrencyTextFieldType
-import com.oliva.samuel.tricountclone.ui.components.expenseShare.EditParticipantsExpenseSharesList
+import com.oliva.samuel.tricountclone.ui.widgets.expenseShare.EditParticipantsExpenseSharesList
 import com.oliva.samuel.tricountclone.ui.model.ExpenseShareUiModel
 import com.oliva.samuel.tricountclone.ui.model.ExpenseUiModel
 import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel

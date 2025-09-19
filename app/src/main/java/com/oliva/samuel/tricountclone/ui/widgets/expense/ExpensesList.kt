@@ -1,4 +1,4 @@
-package com.oliva.samuel.tricountclone.ui.components.expense
+package com.oliva.samuel.tricountclone.ui.widgets.expense
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn

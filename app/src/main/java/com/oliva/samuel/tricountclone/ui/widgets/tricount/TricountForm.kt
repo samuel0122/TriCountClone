@@ -1,4 +1,4 @@
-package com.oliva.samuel.tricountclone.ui.components.tricount
+package com.oliva.samuel.tricountclone.ui.widgets.tricount
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +23,7 @@ import com.oliva.samuel.tricountclone.domain.model.TricountModel
 import com.oliva.samuel.tricountclone.ui.components.CapsuleDropdownMenu
 import com.oliva.samuel.tricountclone.ui.components.CapsuleTextField
 import com.oliva.samuel.tricountclone.ui.components.EmojiSelector
-import com.oliva.samuel.tricountclone.ui.components.participant.AddParticipantsList
+import com.oliva.samuel.tricountclone.ui.widgets.participant.AddParticipantsList
 import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 

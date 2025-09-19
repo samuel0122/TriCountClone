@@ -1,4 +1,4 @@
-package com.oliva.samuel.tricountclone.ui.components.expenseShare
+package com.oliva.samuel.tricountclone.ui.widgets.expenseShare
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding

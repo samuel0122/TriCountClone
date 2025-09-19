@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.oliva.samuel.tricountclone.ui.components.tricount.TricountForm
+import com.oliva.samuel.tricountclone.ui.widgets.tricount.TricountForm
 import com.oliva.samuel.tricountclone.ui.model.ParticipantUiModel
 import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
 

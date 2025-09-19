@@ -1,5 +1,7 @@
 package com.oliva.samuel.tricountclone.ui.screens.tricountsScreen
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -13,12 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.oliva.samuel.tricountclone.core.TricountId
-import com.oliva.samuel.tricountclone.ui.components.tricount.TricountsList
 import com.oliva.samuel.tricountclone.ui.dialogs.tricount.addTricount.AddTricountDialog
 import com.oliva.samuel.tricountclone.ui.model.TricountUiModel
+import com.oliva.samuel.tricountclone.ui.widgets.tricount.TricountsList
 import com.oliva.samuel.tricountclone.utils.Resource
 
 @Composable
@@ -72,10 +75,24 @@ fun TricountsScreenScaffold(
             ) { Icon(imageVector = Icons.Filled.Add, contentDescription = "Add task") }
         }
     ) { innerPadding ->
-        TricountsList(
-            modifier = Modifier.padding(innerPadding),
-            tricountsList = tricountsList,
-            onTricountSelected = onTricountSelected
-        )
+        if (tricountsList.isNotEmpty()) {
+            TricountsList(
+                modifier = Modifier.padding(innerPadding),
+                tricountsList = tricountsList,
+                onTricountSelected = onTricountSelected
+            )
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "No tricounts found - create one to get started!"
+                )
+            }
+        }
     }
 }
