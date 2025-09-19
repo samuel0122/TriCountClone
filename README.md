@@ -8,13 +8,13 @@ This project is a bill-splitting app inspired by TriCount, designed to master Je
 ## 📋 Features
 
 - 👥 **Group & Participant Management**: Create tricount groups and add participants.
-- ➕ **Add, Edit, and Delete Expenses**: Manage group expenses seamlessly.
+- ➕ **Add, Edit, and Delete Expenses**: Manage group expenses.
 - 🔄 **Expense Sharing**: Calculate each participant’s share dynamically.
-- 🧱 **Clean Architecture**: Clean separation in layers: Domain, Data and View.
 - 🎨 **Jetpack Compose UI**: Reactive, modern, and declarative UI components.
 - ⚡ **Real-Time UI Updates**: StateFlow-powered reactive UI with Jetpack Compose.
-- 💉 **Dependency Injection**: Powered by Dagger Hilt for modular and testable code.
 - 💾 **Persistence with Room**: Local database with DAOs, entities, and relations.
+- 🧱 **Clean Architecture**: Clean separation in layers: Domain, Data and View.
+- 💉 **Dependency Injection**: Powered by Dagger Hilt for modular and testable code.
 - 🚀 **Navigation Component**: Structured and scalable navigation across screens.
 
 
@@ -22,10 +22,10 @@ This project is a bill-splitting app inspired by TriCount, designed to master Je
 
 - **Kotlin**: 100% Kotlin-based code.
 - **Jetpack**:
-  - Navigation Component
-  - DataStore for managing preferences
-  - ViewModel and LiveData for reactive UI updates
-  - Jetpack Compose for UI building
+  - Navigation Component.
+  - DataStore for managing preferences.
+  - ViewModel and LiveData for reactive UI updates.
+  - Jetpack Compose for UI building.
 - **Dagger Hilt**: Dependency Injection.
 - **Room**: For local database management via an abstraction layer over SQLite.
 
@@ -41,7 +41,7 @@ This project is a bill-splitting app inspired by TriCount, designed to master Je
 1. [ ] Clone the repository:
     ```bash
     git clone https://github.com/samuel0122/TriCountClone.git
-    cd Android-CameraX-MVVM
+    cd TriCountClone
     ```
 2. [ ] Open the project in Android Studio.
 3. [ ] Sync Gradle to download dependencies.
@@ -49,6 +49,32 @@ This project is a bill-splitting app inspired by TriCount, designed to master Je
 
 
 ## 📂 Project Structure
+
+```
+📂 app/
+├── 📂 core/                      # Core types
+├── 📂 data/                      # Data layer (repositories, database)
+│   ├── 📂 database/              # Room database, DAOs, entities
+│   ├── 📂 preferences            # Manages preferences using DataStore (e.g. logged user ID)
+│   ├── 🗒️ TricountRepository     # Repository to manage tricounts data
+│   ├── 🗒️ UserRepository         # Repository to manage users data
+│   ├── 🗒️ ParticipantRepository  # Repository to manage tricount participants data
+│   ├── 🗒️ ExpenseRepository      # Repository to manage expenses data
+│   ├── 🗒️ ExpenseShareRepository # Repository to manage expense shares data
+├── 📂 di/                        # Dependency injection modules
+├── 📂 domain/                    # Domain layer (Use Cases, models and mappers)
+├── 📂 ui/                        # View layer (Screens, navigation, components, widgets)
+│   ├── 📂 components             # Reusable composables (Cards, Buttons, TextFields)
+│   ├── 📂 dialogs                # Dialogs
+│   ├── 📂 model                  # UI Model classes
+│   ├── 📂 navigation             # Route definitions and NavHost setup
+│   ├── 📂 screens                # Screens and ViewModels
+│   ├── 📂 theme                  # Compose theming
+│   ├── 📂 widgets                # Higher-level UI widgets (lists, items, forms)
+├── 📂 utils/                     # Utility classes and Room type converters
+├── 🗒️ TriCountCloneApp           # Application class for global injection
+├── 🗒️ MainActivity               # Application entry point and navigation host
+```
 
 
 ## 📸 Screenshots
