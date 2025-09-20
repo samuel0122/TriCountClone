@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.oliva.samuel.tricountclone.domain.model.Currency
@@ -17,7 +18,8 @@ fun ExpenseShareItem(
     modifier: Modifier = Modifier,
     participantName: String,
     amountOwned: Double,
-    expenseCurrency: Currency
+    expenseCurrency: Currency,
+    amountOwnedTextColor: Color = Color.Unspecified
 ) {
     Row(
         modifier = modifier
@@ -35,6 +37,7 @@ fun ExpenseShareItem(
                 value = amountOwned,
                 currency = expenseCurrency
             ),
+            color = amountOwnedTextColor
         )
     }
 }

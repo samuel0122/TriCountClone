@@ -10,9 +10,6 @@ object TricountCloneDestinations {
     object SplashScreen
 
     @Serializable
-    object MainScreen
-
-    @Serializable
     object TricountsScreen
 
     @Serializable

@@ -9,8 +9,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.oliva.samuel.tricountclone.ui.screens.expenseDetailScreen.ExpenseDetailScreen
 import com.oliva.samuel.tricountclone.ui.screens.expenseDetailScreen.ExpenseDetailViewModel
-import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreen
-import com.oliva.samuel.tricountclone.ui.screens.mainScreen.MainScreenViewModel
 import com.oliva.samuel.tricountclone.ui.screens.splashScreen.SplashScreen
 import com.oliva.samuel.tricountclone.ui.screens.splashScreen.SplashViewModel
 import com.oliva.samuel.tricountclone.ui.screens.tricountDetailScreen.TricountDetailScreen
@@ -38,17 +36,6 @@ fun TriCountCloneNavigation() {
                         }
                         launchSingleTop = true
                     }
-                }
-            )
-        }
-
-        composable<TricountCloneDestinations.MainScreen> {
-            val mainScreenViewModel = hiltViewModel<MainScreenViewModel>()
-
-            MainScreen(
-                mainScreenViewModel = mainScreenViewModel,
-                navigateToTricountsScreen = {
-                    navigationController.navigate(TricountCloneDestinations.TricountsScreen)
                 }
             )
         }
@@ -83,7 +70,8 @@ fun TriCountCloneNavigation() {
                     navigationController.navigate(
                         TricountCloneDestinations.ExpenseDetailScreen(expenseId)
                     )
-                }
+                },
+                navigateBack = { navigationController.popBackStack() }
             )
         }
 
